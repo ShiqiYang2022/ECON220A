@@ -4,14 +4,14 @@ def save_latex_table(df, out_path,
                      caption="Summary of Yogurt Products in City 1, Period 1",
                      label="tab:yoghurt_summary"):
     df_pretty = df.rename(columns={
-        "product_id": "Product ID",
-        "product_name": "Product Name",
+        "product_id": "ID",
+        "product_name": "Name",
         "price": "Price",
-        "market_share": "Market Share",
-        "package_size_g": "Package Size (g)",
-        "calories_per_g": "Calories per g",
-        "sugar_per_g": "Sugar per g",
-        "protein_per_g": "Protein per g"
+        "market_share": "Share",
+        "package_size_g": "Size/g",
+        "calories_per_g": "Kcal/g",
+        "sugar_per_g": "Sugar/g",
+        "protein_per_g": "Protein/g"
     })
     latex_body = df_pretty.to_latex(
         index=False,
