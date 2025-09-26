@@ -1,7 +1,6 @@
 %% LyX 2.3.7 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[12pt,hyperfootnotes=false]{article}
-\usepackage{mathptmx}
 \usepackage[latin9]{inputenc}
 \usepackage{geometry}
 \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
@@ -31,7 +30,6 @@
 \usepackage{datetime}
 \usepackage{pdflscape}
 \usepackage[english]{babel}
-\usepackage{times}
 \usepackage[small]{caption}
 \usepackage[bottom,hang,flushmargin]{footmisc}
 
@@ -67,7 +65,7 @@
 
 After normalizing calories, added sugar, and protein by package size, we construct a summary table of products available in city 1 during period 1.
 
-\include{Hw1/repo/analysis/output/q1_city1_period1_table}
+\input{Hw1/repo/analysis/output/q1_city1_period1_table}
 
 From this table, we find that:
 
@@ -75,7 +73,52 @@ The two most expensive products are Chobani (price = 1.144) and Dannon (price = 
 
 The two products with the largest market shares are Yoplait (market share = 16.6 \%) and Chobani (market share = 16.4 \%).
 
-Thus, while Chobani is both relatively expensive and popular, Yoplait achieves the highest market share despite having a lower price. This suggests that both price and product characteristics (e.g., taste, nutrition, brand perception) may influence consumer choices in this market.
+
+\subsection{}
+
+Let utility be
+\[
+u_{ijct} = -\alpha p_{jct} + \beta X_{j} + \xi_{jct} + \varepsilon_{ijct},
+\]
+with $\varepsilon_{ijct}\stackrel{iid}{\sim} \text{EV Type I}$ and the outside option
+normalized to $u_{i0ct}=\varepsilon_{i0ct}$. Define the mean utility
+\[
+\delta_{jct}\equiv -\alpha p_{jct} + \beta X_{j} + \xi_{jct}.
+\]
+
+Under the multinomial logit, consumer $i$ chooses product $j$ iff $u_{ijct}\ge u_{ikct}$ for all $k$.
+Aggregating over consumers yields the market share of product $j$ in market $(c,t)$:
+\[
+s_{jct} \;=\; 
+\frac{\exp(\delta_{jct})}{1+\sum_{k=1}^{jct}\exp(\delta_{kct})},
+\qquad
+s_{0ct} \;=\;
+\frac{1}{1+\sum_{k=1}^{jct}\exp(\delta_{kct})}.
+\]
+
+Taking the ratio $s_{jct}/s_{0ct}$ and logs gives the standard logit inversion:
+\[
+\log s_{jct} - \log s_{0ct}
+\;=\;
+\delta_{jct}
+\;=\;
+-\alpha p_{jct} + \beta X_{j} + \xi_{jct}.
+\]
+
+Hence, for each market $(c,t)$ the demand system consists of $jct$ equations,
+each depending only on product $j$'s own price and characteristics:
+\[
+\boxed{\;
+\log s_{jct} - \log s_{0ct}
+\;=\;
+-\alpha p_{jct} + \beta X_{j} + \xi_{jct},
+\qquad j=1,\dots,jct.
+\;}
+\]
+This representation is linear in the parameters once $\log s_{0ct}$ is computed
+from the observed outside share, and it highlights the IIA structure of the logit:
+each equation involves only product $j$'s covariates and an unobserved
+demand shock $\xi_{jct}$ (to be addressed with instruments when $p_{jct}$ is endogenous).
 
 
 \end{spacing}
