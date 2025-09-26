@@ -11,6 +11,8 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{setspace}
+\usepackage{booktabs}
+
 \usepackage[authoryear]{natbib}
 \onehalfspacing
 
@@ -50,53 +52,34 @@
 \makeatother
 
 \begin{document}
-\title{\noindent \textbf{Title}}
-\author{\noindent Author 1,\textbf{ }\textit{Affiliation 1}\textbf{}\thanks{E-mail:\ author1@affiliation1.edu, author2@affiliation2.edu. Acknowledgements
-here.}\textbf{}\\
-Author 2, \textit{Affiliation 2}\textbf{}\\
+\title{\noindent \textbf{Econ 220A Homework 1}}
+\author{\noindent Shiqi Yang,\textbf{ }\textit{UC Berkeley}\textbf{}\thanks{E-mail:\ shiqiy@berkeley.edu
+}\textbf{}\\
 }
-\date{\monthname\ \number\year}
+\date{\today}
 \maketitle
-\begin{abstract}
-\noindent The abstract.
-
-\bigskip{}
-\end{abstract}
-\pagebreak{}
 
 \begin{spacing}{1.4}
 
-\section{Introduction}
+\section{Logit Demand Model with Exogenous Prices}
+
+\subsection{}
+
+After normalizing calories, added sugar, and protein by package size, we construct a summary table of products available in city 1 during period 1.
+
+\include{Hw1/repo/analysis/output/q1_city1_period1_table}
+
+From this table, we find that:
+
+The two most expensive products are Chobani (price = 1.144) and Dannon (price = 1.141).
+
+The two products with the largest market shares are Yoplait (market share = 16.6 \%) and Chobani (market share = 16.4 \%).
+
+Thus, while Chobani is both relatively expensive and popular, Yoplait achieves the highest market share despite having a lower price. This suggests that both price and product characteristics (e.g., taste, nutrition, brand perception) may influence consumer choices in this market.
+
 
 \end{spacing}
 
-\pagebreak{}
 
-\section*{References}
 
-\leftskip=2em 
-\parindent=-2em
-\onehalfspacing
-
-\noindent
-
-Last, First. Year. Title. \textit{Journal} Volume\#(issue\#): page
-range.
-
-\parindent=2em
-\leftskip=0em
-
-\pagebreak{}
-
-\input{figures}
-
-\clearpage
-
-\input{../output/tables_filled}
-
-\pagebreak{}
-
-\appendix
-
-\section{Appendix\label{sec:appendix}}
 \end{document}
