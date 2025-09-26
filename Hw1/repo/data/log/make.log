@@ -1,0 +1,20 @@
+--------------------------------------------------------------------------------
+Makelog started: 2025-09-25 15:16:12
+Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/data
+--------------------------------------------------------------------------------
+Input links successfully created!
+External links successfully created!
+Source logs successfully written!
+WARNING! The following target files have been modified according to git status:
+/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/raw/data_yoghurt.csv
+Version logs successfully written!
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/data/code/clean_data.py" `
+Saved: output/data_yoghurt_clean.csv
+
+Output logs successfully written!
+WARNING! Certain files tracked by git exceed the config size limit (0.5 MB). See below for list of files.
+/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/data/output/data_yoghurt_clean.csv
+--------------------------------------------------------------------------------
+Makelog ended: 2025-09-25 15:16:27
+Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/data
+--------------------------------------------------------------------------------
