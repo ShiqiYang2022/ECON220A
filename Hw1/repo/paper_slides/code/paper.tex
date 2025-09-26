@@ -61,7 +61,7 @@
 
 \section{Logit Demand Model with Exogenous Prices}
 
-\subsection{}
+\subsection*{1.1}
 
 After normalizing calories, added sugar, and protein by package size, we construct a summary table of products available in city 1 during period 1.
 
@@ -74,7 +74,7 @@ The two most expensive products are Chobani (price = 1.144) and Dannon (price = 
 The two products with the largest market shares are Yoplait (market share = 16.6 \%) and Chobani (market share = 16.4 \%).
 
 
-\subsection{}
+\subsection*{1.2}
 
 Let utility be
 \[
@@ -115,14 +115,19 @@ each depending only on product $j$'s own price and characteristics:
 \qquad j=1,\dots,jct.
 \;}
 \]
-This representation is linear in the parameters once $\log s_{0ct}$ is computed
-from the observed outside share, and it highlights the IIA structure of the logit:
-each equation involves only product $j$'s covariates and an unobserved
-demand shock $\xi_{jct}$ (to be addressed with instruments when $p_{jct}$ is endogenous).
 
+\subsection*{1.3}
+
+Under the assumption $\mathbb{E}[\xi_{jct}\mid p_{jct},X_j]=0$, we estimate the
+inverted logit demand equation
+\[
+\log s_{jct}-\log s_{0ct}
+= -\alpha\, p_{jct} + \beta_1\text{weight}_j + \beta_2\text{cal/g}_j
+  + \beta_3\text{sugar/g}_j + \beta_4\text{protein/g}_j + \xi_{jct}.
+\]
+We compute $s_{0ct}$ as one minus the sum of inside shares in each market $(c,t)$.
+
+\input{Hw1/repo/analysis/output/q3_ols_ehw}
 
 \end{spacing}
-
-
-
 \end{document}
