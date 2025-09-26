@@ -34,16 +34,21 @@ def main(in_path="input/data_yoghurt_clean.csv",
     prices = mkt["price"].to_numpy()
     shares = mkt["share"].to_numpy()
     row_names = ["Outside Option"] + [PRODUCT_NAMES.get(int(pid), f"Product {int(pid)}") for pid in mkt["product"]]
-    col_names = [PRODUCT_NAMES.get(int(pid), f"Product {int(pid)}") for pid in mkt["product"]]
-    E = np.zeros((J+1, J))
+    col_names = ["Outside Option"] + [PRODUCT_NAMES.get(int(pid), f"Product {int(pid)}") for pid in mkt["product"]]
+    E = np.zeros((J+1, J+1))
+
+    # Outside row
     for c in range(J):
-        E[0, c] = alpha_hat * prices[c] * shares[c]
+        E[0, c+1] = alpha_hat * prices[c] * shares[c]
+
+    # Product rows
     for j in range(J):
         for m in range(J):
             if j == m:
-                E[j+1, m] = -alpha_hat * prices[m] * (1 - shares[m])
+                E[j+1, m+1] = -alpha_hat * prices[m] * (1 - shares[m])
             else:
-                E[j+1, m] = alpha_hat * prices[m] * shares[m]
+                E[j+1, m+1] = alpha_hat * prices[m] * shares[m]
+
     elastic_df = pd.DataFrame(E, index=row_names, columns=col_names)
     latex = _booktabs(elastic_df,
                       "Own- and cross-price elasticities in City 1, Period 1 (logit).",
