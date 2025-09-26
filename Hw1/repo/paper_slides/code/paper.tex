@@ -136,6 +136,101 @@ We compute $s_{0ct}$ as one minus the sum of inside shares in each market $(c,t)
 
 
 \subsection*{1.5}
+\input{Hw1/repo/analysis/output/q5_diversion_city1p1}
+
+\subsection*{1.6}
+
+Consider Bertrand price competition. Let firm $f$ own a set of products $J_f$
+and take $X_j$ as given. In market $(c,t)$ the firm chooses prices
+$\{p_{jct}\}_{j\in J_f}$ to maximize profit
+\[
+\max_{\{p_{jct}\}_{j\in J_f}} \ \Pi_{f,ct}
+= M_{ct}\sum_{j\in J_f} \big(p_{jct}-c_{jct}\big)\, s_{jct}(p_{ct}),
+\]
+where $M_{ct}$ is market size (drops from the FOCs) and $s_{jct}(p_{ct})$ are the logit
+shares implied by
+\(
+\log s_{jct}-\log s_{0ct}=\delta_{jct}=-\alpha p_{jct}+\beta'X_j+\xi_{jct}.
+\)
+
+The first-order condition for each $j\in J_f$ is
+\[
+0 \;=\; \frac{\partial \Pi_{f,ct}}{\partial p_{jct}}
+\;=\; s_{jct}(p) \;+\; \sum_{k\in J_f}\big(p_{kct}-c_{kct}\big)\,
+\frac{\partial s_{kct}(p)}{\partial p_{jct}}.
+\tag{FOC}
+\]
+
+Let $\Delta(p)$ be the $J\times J$ Jacobian with
+\[
+\frac{\partial s_{jct}}{\partial p_{mct}}
+= -\alpha\, s_{jct}\big(\mathbf{1}\{j=m\}-s_{mct}\big).
+\]
+Stacking the $J$ FOCs and using the ownership matrix
+$A_{km}=1$ if $k$ and $m$ are owned by the same firm and $0$ otherwise,
+we can write
+\[
+s \;+\; \Delta(p)^{\!\top}\! \big(A\,(p-c)\big) = 0
+\quad \Longrightarrow \quad
+p \;=\; c \;-\; \Big(\Delta(p)^{\!\top} A\Big)^{-1}s .
+\]
+With \emph{single-product} firms ($A=I$), the markup simplifies to
+\[
+p_j - c_j \;=\; -\frac{s_j}{\partial s_j/\partial p_j}
+\;=\; \frac{1}{\alpha\,(1-s_j)} .
+\tag{$\star$}
+\]
+
+\subsection*{1.7}
+
+Using the single-product markup formula \((\star)\), marginal cost is
+\[
+c_j \;=\; p_j \;-\; \frac{1}{\hat\alpha\,(1-s_j)} .
+\]
+Plugging in our estimates ($\hat\alpha\simeq 0.8643$) and the observed
+prices and shares in city 1, period 1, we obtain:
+
+\begin{table}[H]\centering
+\caption{Recovered marginal costs (City 1, Period 1)}
+\label{tab:q7_mc}
+\begin{tabular}{lccc}
+\toprule
+Product & Price & Share & Marginal cost $c_j$ \\
+\midrule
+Yoplait          & 0.794 & 0.166 & \textbf{-0.593} \\
+Chobani          & 1.144 & 0.164 & \textbf{-0.240} \\
+Dannon           & 1.141 & 0.128 & \textbf{-0.186} \\
+Stonyfield Farm  & 0.904 & 0.109 & \textbf{-0.394} \\
+Activia          & 0.492 & 0.138 & \textbf{-0.850} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Answer: Not all costs are greater than zero; in fact, all recovered costs are
+negative in this simple OLS logit setup. (Note: depending on the estimated
+$\hat\alpha$, the Activia cost may be closer to the provided hint $-0.9587$.
+For instance, $\hat\alpha\approx 0.80$ would imply $c_{\text{Activia}}\approx-0.959$.)
+
+\subsection*{1.8}
+
+In the inverted-logit equation
+\(
+\log s_{jct}-\log s_{0ct}=-\alpha p_{jct}+\beta'X_j+\xi_{jct},
+\)
+prices are typically \emph{endogenous}: positive demand shocks $\xi_{jct}$
+(brand quality, promotions, shelf placement, etc.) induce firms to raise prices,
+so $\mathrm{Cov}(p_{jct},\xi_{jct})>0$.
+If we estimate by OLS imposing $\mathbb{E}[\xi\mid p,X]=0$,
+the price coefficient $-\alpha$ is biased upward (less negative), hence $\hat\alpha$
+is biased \emph{downward}. Because the implied markup is
+\(
+p_j-c_j=\frac{1}{\alpha(1-s_j)},
+\)
+a downward-biased $\hat\alpha$ yields \emph{inflated markups} and thus
+\emph{understated marginal costs}, often even negative.
+Therefore, recovering reasonable costs requires valid cost shifters and
+instrumental variables (e.g., rivals' characteristics, distances, fuel costs),
+or a structural supply system with appropriate instruments and ownership.
 
 \end{spacing}
 \end{document}
