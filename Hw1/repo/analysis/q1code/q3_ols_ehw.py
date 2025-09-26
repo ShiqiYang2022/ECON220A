@@ -22,8 +22,8 @@ def main(in_path="input/data_yoghurt_clean.csv", out_tex="output/q3_ols_ehw.tex"
 
     Xcols = ["price", "weight", "calories_per_g", "sugar_per_g", "protein_per_g"]
     pretty = {
-        "price": "Price ($)",
-        "weight": "Package size (g)",
+        "price": "Price",
+        "weight": "Package size",
         "calories_per_g": "Calories per g",
         "sugar_per_g": "Added sugar per g",
         "protein_per_g": "Protein per g"

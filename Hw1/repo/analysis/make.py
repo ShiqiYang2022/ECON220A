@@ -41,7 +41,8 @@ gs.get_modified_sources(PATHS, inputs + externals)
 gs.write_version_logs(PATHS)
 
 ### RUN SCRIPTS
-gs.run_python(PATHS, program = 'q1code/summary_stats.py')
+gs.run_python(PATHS, program = 'q1code/q1_summary_stats.py')
+gs.run_python(PATHS, program = 'q1code/q3_ols_ehw.py')
 
 ### LOG OUTPUTS
 gs.log_files_in_output(PATHS)
