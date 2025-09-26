@@ -40,9 +40,9 @@ def main(in_path="input/data_yoghurt_clean.csv", out_tex="output/q3_ols_ehw.tex"
         "p-value": res.pvalues.values
     })
     out["Sig."] = out["p-value"].apply(_stars)
-    out["Coef."] = _fmt(out["Coef."], 4) + out["Sig."]
-    out["Std. Err. (HC1)"] = _fmt(out["Std. Err. (HC1)"], 4)
-    out["t"] = _fmt(out["t"], 2)
+    out["Coef."] = _fmt(out["Coef."], 3) + out["Sig."]
+    out["Std. Err. (HC1)"] = _fmt(out["Std. Err. (HC1)"], 3)
+    out["t"] = _fmt(out["t"], 3)
     out["p-value"] = _fmt(out["p-value"], 3)
     out = out[["Variable", "Coef.", "Std. Err. (HC1)", "t", "p-value"]]
 
