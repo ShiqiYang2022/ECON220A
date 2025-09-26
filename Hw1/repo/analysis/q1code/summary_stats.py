@@ -8,7 +8,7 @@ def save_latex_table(df, out_path,
         "product_name": "Name",
         "price": "Price",
         "market_share": "Share",
-        "package_size_g": "Size/g",
+        "package_size_g": "Size",
         "calories_per_g": "Kcal/g",
         "sugar_per_g": "Sugar/g",
         "protein_per_g": "Protein/g"
