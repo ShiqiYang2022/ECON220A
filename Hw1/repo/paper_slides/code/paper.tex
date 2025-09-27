@@ -63,7 +63,7 @@
 
 \subsection*{1.1}
 
-After normalizing calories, added sugar, and protein by package size, we construct a summary table of products available in city 1 during period 1.
+After normalizing calories, added sugar, and protein by package size, we construct a summary table of products available in city 1 during period 1, see below.
 
 \input{Hw1/repo/analysis/output/q1_city1_period1_table}
 
@@ -125,12 +125,38 @@ inverted logit demand equation
 = -\alpha\, p_{jct} + \beta_1\text{weight}_j + \beta_2\text{cal/g}_j
   + \beta_3\text{sugar/g}_j + \beta_4\text{protein/g}_j + \xi_{jct}.
 \]
-We compute $s_{0ct}$ as one minus the sum of inside shares in each market $(c,t)$.
+We compute $s_{0ct}$ as one minus the sum of inside shares in each market $(c,t)$. The results are presented in \ref{tab:q3_ols_ehw}.
 
 \input{Hw1/repo/analysis/output/q3_ols_ehw}
 
 
 \subsection*{1.4}
+
+We have
+
+Own-price elasticity:
+   \[
+   \varepsilon_{jj}
+   = \frac{\partial s_j}{\partial p_j}\cdot \frac{p_j}{s_j}
+   = -\alpha p_j (1-s_j).
+   \]
+
+Cross-price elasticity:
+   \[
+   \varepsilon_{jm}
+   = \frac{\partial s_j}{\partial p_m}\cdot \frac{p_m}{s_j}
+   = \alpha p_m s_m.
+   \]
+
+Outside option (j=0):
+   \[
+   s_0 = 1 - \sum_{j=1}^J s_j, \qquad
+   \varepsilon_{0m}
+   = \frac{\partial s_0}{\partial p_m}\cdot \frac{p_m}{s_0}
+   = \alpha p_m s_m \cdot \frac{s_0}{s_0} = \alpha p_m s_m.
+   \]
+
+Table \ref{tab:q4_elasticity_city1p1} reports the own price and cross-price elasticity in City 1, Period 1.
 
 \input{Hw1/repo/analysis/output/q4_elasticities_city1p1}
 
@@ -140,52 +166,32 @@ We compute $s_{0ct}$ as one minus the sum of inside shares in each market $(c,t)
 
 \subsection*{1.6}
 
-Consider Bertrand price competition. Let firm $f$ own a set of products $J_f$
-and take $X_j$ as given. In market $(c,t)$ the firm chooses prices
-$\{p_{jct}\}_{j\in J_f}$ to maximize profit
+For a single-product firm $j$ in market $(c,t)$, profit is
 \[
-\max_{\{p_{jct}\}_{j\in J_f}} \ \Pi_{f,ct}
-= M_{ct}\sum_{j\in J_f} \big(p_{jct}-c_{jct}\big)\, s_{jct}(p_{ct}),
+\Pi_{jct} = M_{ct}\,(p_{jct} - c_{jct})\, s_{jct}(p_{jct}),
 \]
-where $M_{ct}$ is market size (drops from the FOCs) and $s_{jct}(p_{ct})$ are the logit
-shares implied by
-\(
-\log s_{jct}-\log s_{0ct}=\delta_{jct}=-\alpha p_{jct}+\beta'X_j+\xi_{jct}.
-\)
+where $s_{jct}$ follows the logit demand with
+$\log s_{jct}-\log s_{0ct} = -\alpha p_{jct} + \beta'X_j + \xi_{jct}$.
+The first-order condition is
+\[
+0 = \frac{\partial \Pi_{jct}}{\partial p_{jct}}
+= s_{jct}(p) + (p_{jct}-c_{jct}) \frac{\partial s_{jct}(p)}{\partial p_{jct}}.
+\]
+Using the logit derivative
+$\frac{\partial s_{jct}}{\partial p_{jct}} = -\alpha\, s_{jct}(1-s_{jct})$,
+we obtain the markup:
+\[
+p_{jct} - c_{jct} = \frac{1}{\alpha(1-s_{jct})},
+\qquad\text{so}\qquad
+c_{jct} = p_{jct} - \frac{1}{\alpha(1-s_{jct})}.
+\]
 
-The first-order condition for each $j\in J_f$ is
-\[
-0 \;=\; \frac{\partial \Pi_{f,ct}}{\partial p_{jct}}
-\;=\; s_{jct}(p) \;+\; \sum_{k\in J_f}\big(p_{kct}-c_{kct}\big)\,
-\frac{\partial s_{kct}(p)}{\partial p_{jct}}.
-\tag{FOC}
-\]
-
-Let $\Delta(p)$ be the $J\times J$ Jacobian with
-\[
-\frac{\partial s_{jct}}{\partial p_{mct}}
-= -\alpha\, s_{jct}\big(\mathbf{1}\{j=m\}-s_{mct}\big).
-\]
-Stacking the $J$ FOCs and using the ownership matrix
-$A_{km}=1$ if $k$ and $m$ are owned by the same firm and $0$ otherwise,
-we can write
-\[
-s \;+\; \Delta(p)^{\!\top}\! \big(A\,(p-c)\big) = 0
-\quad \Longrightarrow \quad
-p \;=\; c \;-\; \Big(\Delta(p)^{\!\top} A\Big)^{-1}s .
-\]
-With \emph{single-product} firms ($A=I$), the markup simplifies to
-\[
-p_j - c_j \;=\; -\frac{s_j}{\partial s_j/\partial p_j}
-\;=\; \frac{1}{\alpha\,(1-s_j)} .
-\tag{$\star$}
-\]
 
 \subsection*{1.7}
 
-Using the single-product markup formula \((\star)\), marginal cost is
+Using the single-product markup formula from 1.6, we have
 \[
-c_j \;=\; p_j \;-\; \frac{1}{\hat\alpha\,(1-s_j)} .
+c_{jct} = p_{jct} - \frac{1}{\alpha(1-s_{jct})}
 \]
 Plugging in our estimates ($\hat\alpha\simeq 0.8643$) and the observed
 prices and shares in city 1, period 1, we obtain:
@@ -193,9 +199,7 @@ prices and shares in city 1, period 1, we obtain:
 \input{Hw1/repo/analysis/output/q7_mc_city1p1}
 
 Answer: Not all costs are greater than zero; in fact, all recovered costs are
-negative in this simple OLS logit setup. (Note: depending on the estimated
-$\hat\alpha$, the Activia cost may be closer to the provided hint $-0.9587$.
-For instance, $\hat\alpha\approx 0.80$ would imply $c_{\text{Activia}}\approx-0.959$.)
+negative in this simple OLS logit setup. 
 
 \subsection*{1.8}
 
