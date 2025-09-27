@@ -14,7 +14,8 @@ def estimate_alpha(df):
     g["s0"] = 1.0 - g["inside_share_sum"]
     eps = 1e-12
     g["logit_dep"] = np.log(np.clip(g["share"], eps, None)) - np.log(np.clip(g["s0"], eps, None))
-    X = g[["price","weight","calories_per_g","sugar_per_g","protein_per_g"]]
+    Xcols = ["price", "weight", "calories_per_g", "sugar_per_g", "protein_per_g"]
+    X = sm.add_constant(g[Xcols], has_constant="add")
     y = g["logit_dep"]
     res = sm.OLS(y, X).fit(cov_type="HC1")
     return -float(res.params["price"])
@@ -25,7 +26,7 @@ def to_booktabs(df, caption, label):
     head += "\\begin{tabular}{lcccc}\n\\toprule\n"
     head += "Product & Price & Share & $1/\\{\\hat\\alpha(1-s)\\}$ & Marginal cost $c_{jct}$ \\\\\n\\midrule\n"
     body = "\n".join(
-        f"{r.Product} & {r.Price:.3f} & {r.Share:.3f} & {r.Markup:.3f} & {r.MC:.3f} \\\\"
+        f"{r.Product} & {r.Price:.4f} & {r.Share:.4f} & {r.Markup:.4f} & {r.MC:.4f} \\\\"
         for _, r in df.iterrows()
     )
     tail = "\n\\bottomrule\n\\end{tabular}\n\\end{table}\n"
