@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
-Makelog started: 2025-09-26 00:49:33
+Makelog started: 2025-09-27 16:03:32
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------
 Input links successfully created!
 External links successfully created!
 Source logs successfully written!
 Version logs successfully written!
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/summary_stats.py" `
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q1_summary_stats.py" `
 Top 2 by price:
     product_id product_name     price
 1           2      Chobani  1.143743
@@ -16,8 +16,33 @@ Top 2 by market share:
 0           1      Yoplait      0.165774
 1           2      Chobani      0.163654
 
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q3_ols_ehw.py" `
+Saved LaTeX table to: output/q3_ols_ehw.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q4_elasticities.py" `
+
+[DEBUG] alpha_hat = 0.8642864238942536
+[DEBUG] price vector = [0.79438322 1.14374259 1.1410406  0.9037467  0.49190093]
+[DEBUG] share vector = [0.16577356 0.1636541  0.12819052 0.10864868 0.13793041]
+[DEBUG] alpha * p1 * s1 = 0.11381592205825779
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q5_diversion.py" `
+Saved LaTeX table to: output/q5_diversion_city1p1.tex
+                 Yoplait  Chobani  ...  Activia  Outside option
+Yoplait           0.0000   0.1962  ...   0.1653          0.3546
+Chobani           0.1982   0.0000  ...   0.1649          0.3537
+Dannon            0.1901   0.1877  ...   0.1582          0.3393
+Stonyfield Farm   0.1860   0.1836  ...   0.1547          0.3319
+Activia           0.1923   0.1898  ...   0.0000          0.3431
+
+[5 rows x 6 columns]
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q7_marginal_costs.py" `
+alpha_hat used = 0.864286
+Saved LaTeX to    : output/q7_mc_city1p1.tex
+
 Output logs successfully written!
 --------------------------------------------------------------------------------
-Makelog ended: 2025-09-26 00:49:36
+Makelog ended: 2025-09-27 16:03:40
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------

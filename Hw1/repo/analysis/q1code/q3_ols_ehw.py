@@ -22,23 +22,28 @@ def main(in_path="input/data_yoghurt_clean.csv", out_tex="output/q3_ols_ehw.tex"
 
     Xcols = ["price", "weight", "calories_per_g", "sugar_per_g", "protein_per_g"]
     pretty = {
+        "const": "Intercept",
         "price": "Price",
         "weight": "Package size",
         "calories_per_g": "Calories per g",
         "sugar_per_g": "Added sugar per g",
         "protein_per_g": "Protein per g"
     }
-    X = df[Xcols]
+    X = sm.add_constant(df[Xcols], has_constant="add")
     y = df["logit_dep"]
     res = sm.OLS(y, X).fit(cov_type="HC1")
 
+    # Use the exact order returned by statsmodels (includes 'const')
+    order = list(res.params.index)
+
     out = pd.DataFrame({
-        "Variable": [pretty[c] for c in Xcols],
-        "Coef.": res.params.values,
-        "Std. Err. (HC1)": res.bse.values,
-        "t": res.tvalues.values,
-        "p-value": res.pvalues.values
+        "Variable": [pretty.get(c, c) for c in order],
+        "Coef.":    res.params[order].values,
+        "Std. Err. (HC1)": res.bse[order].values,
+        "t":        res.tvalues[order].values,
+        "p-value":  res.pvalues[order].values,
     })
+
     out["Sig."] = out["p-value"].apply(_stars)
     out["Coef."] = _fmt(out["Coef."], 3) + out["Sig."]
     out["Std. Err. (HC1)"] = _fmt(out["Std. Err. (HC1)"], 3)
