@@ -2,7 +2,7 @@ import os, numpy as np, pandas as pd, statsmodels.api as sm
 
 def _booktabs(df, caption, label):
     body = df.to_latex(index=False, escape=False, column_format="lccc", bold_rows=False)
-    return "\\begin{table}[H]\n\\centering\n\\caption{{{caption}}}\n" + body + f"\\label{{{label}}}\n\\end{{table}}\n"
+    return "\\begin{table}[H]\n\\centering\n"+f"\\caption{{{caption}}}\n" + body + f"\\label{{{label}}}\n\\end{{table}}\n"
 
 def _prepare(df, z_distance, z_diesel):
     for col in ["price","share",z_distance,z_diesel]:

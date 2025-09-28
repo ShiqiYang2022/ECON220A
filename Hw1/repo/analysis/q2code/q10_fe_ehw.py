@@ -15,7 +15,7 @@ def _booktabs(df, caption, label, colfmt=None):
     if colfmt is None:
         colfmt = "l" + "c"*(df.shape[1]-1)
     body = df.to_latex(index=False, escape=False, column_format=colfmt, bold_rows=False)
-    return "\\begin{table}[H]\n\\centering\n\\caption{{{caption}}}\n\\label{{{label}}}\n" + body + f"\\end{{table}}\n"
+    return "\\begin{table}[H]\n\\centering\n"+f"\\caption{{{caption}}}\n\\label{{{label}}}\n" + body + f"\\end{{table}}\n"
 
 def _booktabs_matrix(M, row_names, col_names, caption, label):
     head = "\\begin{table}[H]\n\\centering\n"

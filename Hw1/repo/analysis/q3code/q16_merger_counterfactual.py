@@ -5,7 +5,7 @@ NAMES = {1:"Yoplait",2:"Chobani",3:"Dannon",4:"Stonyfield Farm",5:"Activia"}
 
 def _booktabs(df, caption, label):
     body = df.to_latex(index=False, escape=False, column_format="lcccc", bold_rows=False)
-    return "\\begin{table}[H]\n\\centering\n\\caption{{{caption}}}\n" + body + f"\\label{{{label}}}\n\\end{{table}}\n"
+    return "\\begin{table}[H]\n\\centering\n"+f"\\caption{{{caption}}}\n" + body + f"\\label{{{label}}}\n\\end{{table}}\n"
 
 def _prepare(df, z_distance, z_diesel):
     for col in ["price","share",z_distance,z_diesel]:

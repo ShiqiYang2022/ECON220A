@@ -1,12 +1,10 @@
 --------------------------------------------------------------------------------
-Makelog started: 2025-09-28 03:26:49
+Makelog started: 2025-09-28 03:36:35
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------
 Input links successfully created!
 External links successfully created!
 Source logs successfully written!
-WARNING! The following target files have been modified according to git status:
-/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/data/output/data_yoghurt_clean.csv
 Version logs successfully written!
 Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q1_summary_stats.py" `
 Top 2 by price:
@@ -73,6 +71,6 @@ Saved: output/q17_welfare_products_city1p1.tex and output/q17_welfare_summary_ci
 
 Output logs successfully written!
 --------------------------------------------------------------------------------
-Makelog ended: 2025-09-28 03:27:08
+Makelog ended: 2025-09-28 03:36:54
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------
