@@ -21,8 +21,8 @@ def save_latex_table(df, out_path,
     full_tex = (
         "\\begin{table}[htbp]\n"
         "\\centering\n"
-        f"{latex_body}\n"
         f"\\caption{{{caption}}}\n"
+        f"{latex_body}\n"
         f"\\label{{{label}}}\n"
         "\\end{table}\n"
     )

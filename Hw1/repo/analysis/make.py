@@ -46,6 +46,8 @@ gs.run_python(PATHS, program = 'q1code/q3_ols_ehw.py')
 gs.run_python(PATHS, program = 'q1code/q4_elasticities.py')
 gs.run_python(PATHS, program = 'q1code/q5_diversion.py')
 gs.run_python(PATHS, program = 'q1code/q7_marginal_costs.py')
+gs.run_python(PATHS, program = 'q2code/q10_fe_ehw.py')
+gs.run_python(PATHS, program = 'q2code/q11_marginal_costs.py')
 
 ### LOG OUTPUTS
 gs.log_files_in_output(PATHS)

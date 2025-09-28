@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-Makelog started: 2025-09-27 16:03:32
+Makelog started: 2025-09-28 02:17:47
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------
 Input links successfully created!
@@ -38,11 +38,19 @@ Activia           0.1923   0.1898  ...   0.0000          0.3431
 [5 rows x 6 columns]
 
 Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q7_marginal_costs.py" `
-alpha_hat used = 0.864286
+alpha_hat used = 0.799654
 Saved LaTeX to    : output/q7_mc_city1p1.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q2code/q10_fe_ehw.py" `
+alpha_hat (FE) = 0.868872
+Saved: output/q10_fe_ols_price.tex, output/q10_elasticities_city1p1_fe.tex, output/q10_diversion_city1p1_fe.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q2code/q11_marginal_costs.py" `
+alpha_hat used = 0.868872
+Saved LaTeX to    : output/q11_mc_city1p1_fe.tex
 
 Output logs successfully written!
 --------------------------------------------------------------------------------
-Makelog ended: 2025-09-27 16:03:40
+Makelog ended: 2025-09-28 02:17:59
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------

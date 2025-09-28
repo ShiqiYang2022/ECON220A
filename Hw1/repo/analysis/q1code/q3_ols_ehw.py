@@ -54,8 +54,8 @@ def main(in_path="input/data_yoghurt_clean.csv", out_tex="output/q3_ols_ehw.tex"
     body = out.to_latex(index=False, escape=False, column_format="lcccc", bold_rows=False)
     table_env = (
         "\\begin{table}[H]\n\\centering\n"
-        + body
         + f"\\caption{{{caption}}}\n\\label{{{label}}}\n\\end{{table}}\n"
+        + body
     )
     with open(out_tex, "w") as f:
         f.write(table_env)
