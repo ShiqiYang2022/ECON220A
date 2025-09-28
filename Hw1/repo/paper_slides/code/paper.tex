@@ -305,5 +305,78 @@ coefficients demand system.
 
 
 
+
+\section{Logit Demand Model using cost shifters}
+
+\subsection*{Question 12}
+We instrument price with a cost shifter: for product $j$ in city $c$ and period $t$,
+\[
+Z_{jct}= \text{distance}_{cj}\times \text{diesel}_t .
+\]
+With three-way fixed effects (product, city, period), identification of $\alpha$ comes from
+within-product price variation across cities/periods induced by $Z_{jct}$, while FE purge most time-invariant quality, city demand, and aggregate shocks. This specification is not equivalent to a model that only includes $X_j$: the FE specification removes many confounds that $X_j$ cannot capture and then uses $Z_{jct}$ to address remaining within-market price endogeneity. Hence IV with FE is more likely to deliver less biased own-price elasticities, provided the first stage is strong after FE residualization. Exclusion could fail if distance also shifts demand (e.g., freshness, shelf access) or if distribution-center locations are chosen endogenously with demand.
+
+\subsection*{Question 13}
+We estimate
+\[
+\log s_{jct}-\log s_{0,ct}=-\alpha p_{jct}+\tau_j+\tau_c+\tau_t+\varepsilon_{jct}
+\]
+by IV with $Z_{jct}$ and EHW (HC1) standard errors. Given $\hat\alpha$, own- and cross-price elasticities in market $(1,1)$ are
+\[
+\varepsilon_{jj}=-\hat\alpha\,p_j(1-s_j),\qquad
+\varepsilon_{jk}=\hat\alpha\,p_k s_k\;(k\neq j),
+\]
+and diversion ratios are $D_{j\to k}= s_k/(1-s_j)$. Relative to OLS or FE-OLS, $|\hat\alpha|$ typically increases (correcting price endogeneity), so elasticities grow in magnitude, while diversion ratios are unchanged because they depend only on shares under MNL.
+
+\input{Hw1/repo/analysis/output/q13_iv_fe_price}
+\input{Hw1/repo/analysis/output/q13_elasticities_city1p1_ivfe}
+\input{Hw1/repo/analysis/output/q13_diversion_city1p1_ivfe}
+
+\subsection*{Question 14}
+Bertrand FOCs imply $s=\Delta(p-c)$ with
+\[
+\Delta=\hat\alpha\big(\Omega\odot(\mathrm{diag}(s)-ss^\top)\big).
+\]
+With single-product firms ($\Omega=I$),
+\[
+p_j-c_j=\frac{1}{\hat\alpha(1-s_j)},\qquad
+c_j=p_j-\frac{1}{\hat\alpha(1-s_j)} .
+\]
+Using prices and shares in city 1, period 1 with IV-FE $\hat\alpha$, we recover marginal costs. Costs are expected to be higher (markups smaller) than in FE-OLS; all costs should be nonnegative, and the cost of Activia should be approximately $0.1541$.
+
+\input{Hw1/repo/analysis/output/q14_mc_city1p1_ivfe}
+
+\subsection*{Question 15}
+Algorithm to recover equilibrium prices with estimated $\hat\alpha$ and $c$:
+\begin{enumerate}\setlength{\itemsep}{0pt}
+\item Calibrate $\delta^{obs}_j=\log s_j-\log s_0+\hat\alpha\,p^{obs}_j$.
+\item Initialize $p^{(0)}=p^{obs}$. For iteration $t$:
+\begin{align*}
+\delta^{(t)}&=\delta^{obs}-\hat\alpha p^{(t)},\quad
+s^{(t)}=\frac{\exp(\delta^{(t)})}{1+\sum_k \exp(\delta^{(t)}_k)},\\
+\Delta^{(t)}&=\hat\alpha\big(\Omega\odot(\mathrm{diag}(s^{(t)})-s^{(t)}s^{(t)\top})\big),\\
+p^{(t+1)}&=c+\left(\Delta^{(t)}\right)^{-1}s^{(t)} .
+\end{align*}
+\item Stop when $\|p^{(t+1)}-p^{(t)}\|_\infty<\varepsilon$.
+\end{enumerate}
+Using $\Omega=I$ and $c_j=p^{obs}_j-1/[\hat\alpha(1-s_j)]$, the algorithm reproduces the observed prices for city 1, period 1 up to numerical error.
+
+\input{Hw1/repo/analysis/output/q15_recovered_prices_city1p1}
+
+\subsection*{Question 16}
+Counterfactual merger (Chobani + Dannon) with constant marginal costs: set $\Omega$ so that the two products share common ownership and resolve the fixed point above. Prices of the merged products increase because the firm internalizes cannibalization; rivals' prices typically rise as well by strategic complementarity.
+
+\input{Hw1/repo/analysis/output/q16_merger_prices_city1p1}
+
+\subsection*{Question 17}
+Consumer welfare in MNL is the inclusive value
+\[
+CS(p)=\frac{1}{\hat\alpha}\log\!\Big(1+\sum_j e^{\delta^{obs}_j-\hat\alpha p_j}\Big).
+\]
+We compute $CS$ per capita with and without the merger using the fixed-point prices from above, and compare the difference to per-capita expenditure $\sum_j p_j s_j$. Consumers are typically worse off after the merger (higher prices reduce the inclusive value); the magnitude of the welfare loss relative to total expenditure is reported below.
+
+\input{Hw1/repo/analysis/output/q17_welfare_products_city1p1}
+\input{Hw1/repo/analysis/output/q17_welfare_summary_city1p1}
+
 \end{spacing}
 \end{document}
