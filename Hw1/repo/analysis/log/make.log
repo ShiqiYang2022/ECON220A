@@ -1,10 +1,12 @@
 --------------------------------------------------------------------------------
-Makelog started: 2025-09-28 02:17:47
+Makelog started: 2025-09-28 03:26:49
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------
 Input links successfully created!
 External links successfully created!
 Source logs successfully written!
+WARNING! The following target files have been modified according to git status:
+/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/data/output/data_yoghurt_clean.csv
 Version logs successfully written!
 Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q1_summary_stats.py" `
 Top 2 by price:
@@ -49,8 +51,28 @@ Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw
 alpha_hat used = 0.868872
 Saved LaTeX to    : output/q11_mc_city1p1_fe.tex
 
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q13_iv_fe.py" `
+alpha_hat (IV-FE) = 3.433984  SE(HC1) = 0.051552
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q14_mc_ivfe.py" `
+alpha_hat (IV-FE) = 3.433984
+Saved: output/q14_mc_city1p1_ivfe.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q15_eq_prices.py" `
+alpha_hat (IV-FE) = 3.433984
+max|diff| = 0.01034023810736584
+Saved: output/q15_recovered_prices_city1p1.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q16_merger_counterfactual.py" `
+Saved: output/q16_merger_prices_city1p1.tex
+alpha_hat (IV-FE) = 3.433983577469405
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q17_welfare_ivfe.py" `
+alpha_hat (IV-FE) = 3.433983577469405
+Saved: output/q17_welfare_products_city1p1.tex and output/q17_welfare_summary_city1p1.tex
+
 Output logs successfully written!
 --------------------------------------------------------------------------------
-Makelog ended: 2025-09-28 02:17:59
+Makelog ended: 2025-09-28 03:27:08
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------

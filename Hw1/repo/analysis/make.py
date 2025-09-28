@@ -48,6 +48,11 @@ gs.run_python(PATHS, program = 'q1code/q5_diversion.py')
 gs.run_python(PATHS, program = 'q1code/q7_marginal_costs.py')
 gs.run_python(PATHS, program = 'q2code/q10_fe_ehw.py')
 gs.run_python(PATHS, program = 'q2code/q11_marginal_costs.py')
+gs.run_python(PATHS, program = 'q3code/q13_iv_fe.py')
+gs.run_python(PATHS, program = 'q3code/q14_mc_ivfe.py')
+gs.run_python(PATHS, program = 'q3code/q15_eq_prices.py')
+gs.run_python(PATHS, program = 'q3code/q16_merger_counterfactual.py')
+gs.run_python(PATHS, program = 'q3code/q17_welfare_ivfe.py')
 
 ### LOG OUTPUTS
 gs.log_files_in_output(PATHS)
