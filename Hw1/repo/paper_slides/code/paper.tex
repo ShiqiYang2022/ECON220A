@@ -228,12 +228,10 @@ Consider the inverted-logit estimating equation
 = -\alpha\,p_{jct} \;+\; \tau_j \;+\; \tau_c \;+\; \tau_t \;+\; \varepsilon_{jct},
 \]
 where $\tau_j$ (product FE), $\tau_c$ (city FE), and $\tau_t$ (period FE) are unrestricted
-additive terms. The product FE absorbs time- and market-invariant quality/brand appeal that
+additive terms. The product FE absorbs time- and market-irrelevant quality/brand effect that
 is typically positively correlated with prices (``high-quality--high-price''), the city FE absorbs
 location-wide demand and cost shifters, and the period FE absorbs aggregate shocks (inflation,
-seasonality, national advertising, etc.). Hence identification of $\alpha$ relies on \emph{within-product}
-price variation across cities and/or periods, purging a large part of the omitted-variable bias present
-in a pooled OLS without FE.
+seasonality, national advertising, etc.). Those fixed effects absorbed a large part of the omitted-variable bias present in the previous OLS without FE.
 
 However, the unobserved, market-specific quality $\xi_{jct}$ (e.g., promotion, shelf placement)
 may still be correlated with prices within a market, so three-way FE do not in general solve price
@@ -246,7 +244,7 @@ We estimate
 \log s_{jct}-\log s_{0,ct}
 = -\alpha\,p_{jct} + \tau_j + \tau_c + \tau_t + \varepsilon_{jct}
 \]
-by OLS with Eicker--Huber--White (HC1) standard errors and product/city/period fixed effects.
+by OLS with EHW (HC1) standard errors and product/city/period fixed effects.
 Given the FE estimate $\hat\alpha$, market prices $p_{j11}$ and shares $s_{j11}$, own- and
 cross-price elasticities in a multinomial logit are
 \[
@@ -266,6 +264,10 @@ D_{j\to k,\,11}
 Relative to the no-FE estimates, $|\hat\alpha|$ typically increases (less attenuation from
 uncontrolled quality), so both own- and cross-price elasticities increase in magnitude, while
 diversion ratios---which depend only on market shares in MNL---remain unchanged.
+
+The results are presented below.
+
+\input{}
 
 \subsection*{Question 11}
 
