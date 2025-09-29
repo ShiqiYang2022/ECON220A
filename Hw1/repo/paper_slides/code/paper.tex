@@ -378,5 +378,65 @@ We compute $CS$ per capita with and without the merger using the fixed-point pri
 \input{Hw1/repo/analysis/output/q17_welfare_products_city1p1}
 \input{Hw1/repo/analysis/output/q17_welfare_summary_city1p1}
 
+
+\section{Nested Logit Demand Model}
+
+\subsection*{Question 18}
+Under the standard logit, IIA forces substitution to be proportional to market shares. When Chobani and Dannon are both zero-sugar products, a price increase of one should mainly divert demand to the other, but IIA spreads diversion across all inside options and the outside good. This makes the cross-price elasticity between the two zero-sugar products biased downward, so a merger between them looks less harmful: markups and post-merger prices are understated and consumer-welfare losses are overstated less. A nested logit with a ``no-sugar'' nest allows within-nest correlation and concentrates substitution inside the nest, alleviating this bias.
+
+\subsection*{Question 19}
+Let $g$ index nests (no-sugar, sugary, outside). With single-level nested logit and correlation parameter $\rho\in[0,1)$, market shares factor as
+\[
+s_{jct}=s_{g,ct}\,s_{j|g,ct},
+\quad
+s_{j|g,ct}=\frac{\exp(\delta_{jct}/(1-\rho))}{\sum_{k\in g}\exp(\delta_{kct}/(1-\rho))}.
+\]
+The estimating equation that depends only on product $j$’s observables and conditional share is
+\[
+\boxed{\ \log s_{jct}-\log s_{0,ct}
+= -\alpha\,p_{jct}+\rho\log s_{j|g,ct}+x_{j}'\beta+\tau_j+\tau_c+\tau_t+\varepsilon_{jct}\ }.
+\]
+Both $p_{jct}$ and $\log s_{j|g,ct}$ are endogenous after FE; cost shifters and nest-size shifters are used as instruments.
+
+\subsection*{Question 20}
+We estimate the nested-logit equation by 2SLS with product/city/period fixed effects and EHW (HC1) standard errors. The instrument for price is ${\rm distance}_{cj}\times {\rm diesel}_t$; the instrument for $\log s_{j|g}$ is the (log) number of products in nest $g$ in market $(c,t)$. The estimates of $\alpha$ and $\rho$ are reported below.
+\input{Hw1/repo/analysis/output/q20_nested_ivfe}
+
+\subsection*{Question 21}
+Own- and cross-price elasticities in market $(1,1)$ follow the nested-logit formulas
+\[
+\varepsilon_{jj}=-\hat\alpha\,p_j\big[1-\hat\rho(1-s_{j|g})-s_j\big],\qquad
+\varepsilon_{jk}=
+\begin{cases}
+\hat\alpha\,p_k\,[\hat\rho\,s_{k|g}-s_k], & k\in g,\ k\neq j,\\
+\hat\alpha\,p_k\,s_k, & k\notin g,
+\end{cases}
+\]
+and diversion ratios are larger within nest than across nests. Tables:
+\input{Hw1/repo/analysis/output/q21_nl_elasticities_city1p1}
+\input{Hw1/repo/analysis/output/q21_nl_diversion_city1p1}
+
+\subsection*{Question 22}
+With single-product firms, the Bertrand FOCs imply
+\[
+p_j-c_j=\frac{1}{\hat\alpha\,[1-\hat\rho(1-s_{j|g})-s_j]},\qquad
+c_j=p_j-\frac{1}{\hat\alpha\,[1-\hat\rho(1-s_{j|g})-s_j]} .
+\]
+Using prices and shares in city 1, period 1 with the IV-FE estimates $(\hat\alpha,\hat\rho)$ we obtain:
+\input{Hw1/repo/analysis/output/q22_nl_costs_city1p1}
+All costs are expected to be nonnegative; the cost of Activia should be approximately $0.1957$.
+
+\subsection*{Question 23}
+To simulate a merger between Chobani and Dannon while holding marginal costs fixed, we solve the pricing fixed point with an ownership matrix that sets the two products under common ownership. Prices of the merging products rise because the firm internalizes within-nest cannibalization; rivals’ prices typically increase by strategic complementarity. The table also reports the post-merger prices from the standard logit (Section 3); nested-logit post-merger prices are generally higher when $\hat\rho>0$.
+\input{Hw1/repo/analysis/output/q23_nl_merger_prices_city1p1}
+
+\subsection*{Question 24}
+Per-capita consumer surplus in nested logit is
+\[
+CS(p)=\frac{1}{\hat\alpha}\log\!\Bigg(1+\sum_{g}\Big[\sum_{j\in g}e^{\delta^{obs}_j-\hat\alpha p_j\over 1-\hat\rho}\Big]^{1-\hat\rho}\Bigg).
+\]
+Using the pre- and post-merger fixed-point prices from Question 23, we compute the welfare change and compare it to per-capita expenditure $\sum_j p_js_j$. Nested logit predicts larger welfare losses than the standard logit because within-nest substitution is stronger and the merger internalizes more cannibalization.
+\input{Hw1/repo/analysis/output/q24_nl_welfare_city1p1}
+
 \end{spacing}
 \end{document}
