@@ -53,6 +53,11 @@ gs.run_python(PATHS, program = 'q3code/q14_mc_ivfe.py')
 gs.run_python(PATHS, program = 'q3code/q15_eq_prices.py')
 gs.run_python(PATHS, program = 'q3code/q16_merger_counterfactual.py')
 gs.run_python(PATHS, program = 'q3code/q17_welfare_ivfe.py')
+gs.run_python(PATHS, program = 'q4code/q20_nested_ivfe.py')
+gs.run_python(PATHS, program = 'q4code/q21_nested_elasticities.py')
+gs.run_python(PATHS, program = 'q4code/q22_nested_costs.py')
+gs.run_python(PATHS, program = 'q4code/q23_nl_merger_prices.py')
+gs.run_python(PATHS, program = 'q4code/q24_nl_welfare.py')
 
 ### LOG OUTPUTS
 gs.log_files_in_output(PATHS)

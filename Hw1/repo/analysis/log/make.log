@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-Makelog started: 2025-09-28 03:36:35
+Makelog started: 2025-09-28 20:20:59
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------
 Input links successfully created!
@@ -69,8 +69,26 @@ Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw
 alpha_hat (IV-FE) = 3.433983577469405
 Saved: output/q17_welfare_products_city1p1.tex and output/q17_welfare_summary_city1p1.tex
 
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q20_nested_ivfe.py" `
+alpha = 2.1029273891974665 rho = 0.5319409127010122
+Saved: output/q20_nested_ivfe.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q21_nested_elasticities.py" `
+Saved: output/q21_nl_elasticities_city1p1.tex and output/q21_nl_diversion_city1p1.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q22_nested_costs.py" `
+alpha = 2.1029273891974665 rho = 0.5319409127010122
+Saved: output/q22_nl_costs_city1p1.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q23_nl_merger_prices.py" `
+alpha_nl = 2.1029273891974665 rho = 0.5319409127010122 alpha_mnl = 3.433983577469405
+Saved: output/q23_nl_merger_prices_city1p1.tex
+
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q24_nl_welfare.py" `
+Saved: output/q24_nl_welfare_city1p1.tex
+
 Output logs successfully written!
 --------------------------------------------------------------------------------
-Makelog ended: 2025-09-28 03:36:54
+Makelog ended: 2025-09-28 20:21:26
 Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
 --------------------------------------------------------------------------------
