@@ -313,8 +313,8 @@ We instrument price with a cost shifter: for product $j$ in city $c$ and period 
 \[
 Z_{jct}= \text{distance}_{cj}\times \text{diesel}_t .
 \]
-With three-way fixed effects (product, city, period), identification of $\alpha$ comes from
-within-product price variation across cities/periods induced by $Z_{jct}$, while FE purge most time-invariant quality, city demand, and aggregate shocks. This specification is not equivalent to a model that only includes $X_j$: the FE specification removes many confounds that $X_j$ cannot capture and then uses $Z_{jct}$ to address remaining within-market price endogeneity. Hence IV with FE is more likely to deliver less biased own-price elasticities, provided the first stage is strong after FE residualization. Exclusion could fail if distance also shifts demand (e.g., freshness, shelf access) or if distribution-center locations are chosen endogenously with demand.
+In three-way fixed effects (product, city, period) model, identification of $\alpha$ comes from
+within-product price variation across cities/periods induced by $Z_{jct}$, while FE purge most time-invariant quality, city demand, and aggregate shocks. This specification is not equivalent to a model that only includes $X_j$: the FE specification removes many confounds that $X_j$ cannot capture and then uses $Z_{jct}$ to address remaining within-market price endogeneity. Hence IV with FE is more likely to deliver less biased own-price elasticities. Exclusion could fail if distance also shifts demand (e.g., freshness, shelf access) or if distribution-center locations are chosen endogenously.
 
 \subsection*{Question 13}
 We estimate
@@ -326,7 +326,7 @@ by IV with $Z_{jct}$ and EHW (HC1) standard errors. Given $\hat\alpha$, own- and
 \varepsilon_{jj}=-\hat\alpha\,p_j(1-s_j),\qquad
 \varepsilon_{jk}=\hat\alpha\,p_k s_k\;(k\neq j),
 \]
-and diversion ratios are $D_{j\to k}= s_k/(1-s_j)$. Relative to OLS or FE-OLS, $|\hat\alpha|$ typically increases (correcting price endogeneity), so elasticities grow in magnitude, while diversion ratios are unchanged because they depend only on shares under MNL.
+and diversion ratios are $D_{j\to k}= s_k/(1-s_j)$. Table 9 - 11 reports the results. Relative to OLS or FE-OLS, $|\hat\alpha|$ typically increases (correcting price endogeneity), so elasticities grow in magnitude, while diversion ratios are unchanged because they depend only on shares under MNL.
 
 \input{Hw1/repo/analysis/output/q13_iv_fe_price}
 \input{Hw1/repo/analysis/output/q13_elasticities_city1p1_ivfe}
@@ -342,7 +342,7 @@ With single-product firms ($\Omega=I$),
 p_j-c_j=\frac{1}{\hat\alpha(1-s_j)},\qquad
 c_j=p_j-\frac{1}{\hat\alpha(1-s_j)} .
 \]
-Using prices and shares in city 1, period 1 with IV-FE $\hat\alpha$, we recover marginal costs. Costs are expected to be higher (markups smaller) than in FE-OLS; all costs should be nonnegative, and the cost of Activia should be approximately $0.1541$.
+Using prices and shares in city 1, period 1 with IV-FE $\hat\alpha$, we recover marginal costs. Costs are expected to be higher (markups smaller) than in FE-OLS; all costs are greater than 0.
 
 \input{Hw1/repo/analysis/output/q14_mc_city1p1_ivfe}
 
@@ -375,7 +375,6 @@ CS(p)=\frac{1}{\hat\alpha}\log\!\Big(1+\sum_j e^{\delta^{obs}_j-\hat\alpha p_j}\
 \]
 We compute $CS$ per capita with and without the merger using the fixed-point prices from above, and compare the difference to per-capita expenditure $\sum_j p_j s_j$. Consumers are typically worse off after the merger (higher prices reduce the inclusive value); the magnitude of the welfare loss relative to total expenditure is reported below.
 
-\input{Hw1/repo/analysis/output/q17_welfare_products_city1p1}
 \input{Hw1/repo/analysis/output/q17_welfare_summary_city1p1}
 
 
@@ -396,7 +395,6 @@ The estimating equation that depends only on product $j$'s observables and condi
 \boxed{\ \log s_{jct}-\log s_{0,ct}
 = -\alpha\,p_{jct}+\rho\log s_{j|g,ct}+x_{j}'\beta+\tau_j+\tau_c+\tau_t+\varepsilon_{jct}\ }.
 \]
-Both $p_{jct}$ and $\log s_{j|g,ct}$ are endogenous after FE; cost shifters and nest-size shifters are used as instruments.
 
 \subsection*{Question 20}
 We estimate the nested-logit equation by 2SLS with product/city/period fixed effects and EHW (HC1) standard errors. The instrument for price is ${\rm distance}_{cj}\times {\rm diesel}_t$; the instrument for $\log s_{j|g}$ is the (log) number of products in nest $g$ in market $(c,t)$. The estimates of $\alpha$ and $\rho$ are reported below.
@@ -427,7 +425,7 @@ Using prices and shares in city 1, period 1 with the IV-FE estimates $(\hat\alph
 All costs are expected to be nonnegative; the cost of Activia should be approximately $0.1957$.
 
 \subsection*{Question 23}
-To simulate a merger between Chobani and Dannon while holding marginal costs fixed, we solve the pricing fixed point with an ownership matrix that sets the two products under common ownership. Prices of the merging products rise because the firm internalizes within-nest cannibalization; rivals' prices typically increase by strategic complementarity. The table also reports the post-merger prices from the standard logit (Section 3); nested-logit post-merger prices are generally higher when $\hat\rho>0$.
+To simulate a merger between Chobani and Dannon while holding marginal costs fixed, we solve the pricing fixed point with an ownership matrix that sets the two products under common ownership. Prices of the merging products rise because the firm internalizes within-nest competition; rivals' prices typically increase by strategic complementarity. The table also reports the post-merger prices from the standard logit (Section 3); nested-logit post-merger prices are generally higher when $\hat\rho>0$.
 \input{Hw1/repo/analysis/output/q23_nl_merger_prices_city1p1}
 
 \subsection*{Question 24}
