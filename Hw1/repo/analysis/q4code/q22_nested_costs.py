@@ -74,7 +74,8 @@ def main(in_csv="input/data_yoghurt_clean.csv",
     s=m["share"].to_numpy(float); p=m["price"].to_numpy(float)
     gsum=m.groupby("nest")["share"].transform("sum").to_numpy(float)
     s_jg=np.clip(s/np.clip(gsum,1e-12,None),1e-12,1-1e-12)
-    markup=1.0/(a*(1.0 - r*(1.0 - s_jg) - s))
+    s_g = gsum
+    markup = 1.0/(a*((1.0/(1.0 - r))*(1.0 - s_jg) + s_jg*(1.0 - s_g)))
     mc=p-markup
     tbl=pd.DataFrame({"Product":m["Product"],"Price":p,"Share":s,"Markup":markup,"MC":mc})
     with open(out_tex,"w") as f:
