@@ -78,7 +78,7 @@ def main(in_csv="input/data_yoghurt_clean.csv",
     tbl = compute_mc(df, alpha, city, period)
     with open(out_tex,"w") as f:
         f.write(_booktabs(tbl, f"Recovered marginal costs (City {city}, Period {period}, IV-FE $\\hat\\alpha$).", f"tab:q14_mc_c{city}t{period}"))
-    print(f"alpha_hat (IV-FE) = {alpha:.6f}")
+    print(f"alpha_hat (IV-FE) = {alpha:.4f}")
     print("Saved:", out_tex)
 
 if __name__ == "__main__":

@@ -60,7 +60,7 @@ def recover_delta_obs(df, alpha):
 def shares_from_delta(delta):
     mx = np.max(delta)
     eg = np.exp(delta-mx)
-    return eg/(1.0+eg.sum())
+    return eg/(np.exp(-mx) + eg.sum())
 
 def fixed_point_prices_owners(p0, c, alpha, delta_obs, owners, tol=1e-12, itmax=10000):
     p = p0.copy()

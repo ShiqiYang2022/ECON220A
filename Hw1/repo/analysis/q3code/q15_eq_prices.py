@@ -57,7 +57,7 @@ def recover_delta_obs(df, alpha):
 def shares_from_delta(delta):
     mx = np.max(delta)
     eg = np.exp(delta-mx)
-    s = eg/(1.0+eg.sum())
+    s = eg/(np.exp(-mx) + eg.sum())
     return s
 
 def fixed_point_prices(p0, c, alpha, delta_obs, tol=1e-12, itmax=10000):

@@ -61,7 +61,7 @@ def recover_delta_obs(df, alpha):
 def shares_from_delta(delta):
     mx = float(np.max(delta))
     eg = np.exp(delta-mx)
-    s = eg/(1.0+eg.sum())
+    s = eg/(np.exp(-mx)+eg.sum())
     return s
 
 def owners_matrix(products, merged_groups=None):
@@ -125,8 +125,8 @@ def main(in_csv="input/data_yoghurt_clean.csv",
     spend_post = np.sum(p_post*s_post)
     cs_pre = consumer_surplus_percap(delta_pre, alpha)
     cs_post = consumer_surplus_percap(delta_post, alpha)
-    cs_diff = cs_post - cs_pre
-    spend_diff = spend_post - spend_pre
+    diff_cs = cs_post - cs_pre
+    diff_spend = spend_post - spend_pre
     prod_tbl = pd.DataFrame({
         "Product": names,
         "Old price": p_pre,
@@ -137,25 +137,26 @@ def main(in_csv="input/data_yoghurt_clean.csv",
         "New p*s": p_post*s_post,
         "\\Delta price": p_post - p_pre,
         "\\Delta share": s_post - s_pre
-    }).round(6)
+    }).round(4)
     with open(out_products,"w") as f:
         f.write(_booktabs(prod_tbl,
                           f"Product-level prices, shares and expenditure per capita before vs. after merger (City {city}, Period {period}).",
                           f"tab:q17_prod_c{city}t{period}"))
     summ = pd.DataFrame({
-        "Metric": ["Consumer surplus per capita","Total expenditure per capita","Difference (post - pre)","CS change as \\% of pre expenditure"],
-        "Pre-merger": [cs_pre, spend_pre, np.nan, np.nan],
-        "Post-merger": [cs_post, spend_post, np.nan, np.nan]
+        "Metric": ["Consumer surplus per capita","Total expenditure per capita"],
+        "Pre-merger": [cs_pre, spend_pre],
+        "Post-merger": [cs_post, spend_post],
+        "Difference": [diff_cs, diff_spend]
     })
-    summ.loc[2,"Pre-merger"] = cs_diff
-    summ.loc[2,"Post-merger"] = spend_diff
-    summ.loc[3,"Pre-merger"] = 100.0*cs_diff/spend_pre
-    summ.loc[3,"Post-merger"] = np.nan
+
+    for col in ["Pre-merger","Post-merger","Difference"]:
+        summ[col] = summ[col].map(lambda x: f"{x:.4f}")
+
     with open(out_summary,"w") as f:
-        f.write(_booktabs(summ.round(6),
-                          f"Consumer welfare and expenditure per capita before vs. after merger (City {city}, Period {period}).",
-                          f"tab:q17_sum_c{city}t{period}",
-                          colfmt="lcc"))
+        f.write(_booktabs(summ,
+                        f"Consumer welfare and expenditure per capita before vs. after merger (City {city}, Period {period}).",
+                        f"tab:q17_sum_c{city}t{period}",
+                        colfmt="lccc"))
     print("alpha_hat (IV-FE) =", alpha)
     print("Saved:", out_products, "and", out_summary)
 

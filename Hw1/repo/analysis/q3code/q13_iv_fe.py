@@ -5,7 +5,7 @@ NAMES = {1:"Yoplait",2:"Chobani",3:"Dannon",4:"Stonyfield Farm",5:"Activia"}
 def _booktabs(df, caption, label, colfmt=None):
     if colfmt is None: colfmt = "l" + "c"*(df.shape[1]-1)
     body = df.to_latex(index=False, escape=False, column_format=colfmt, bold_rows=False)
-    return "\\begin{table}[H]\n\\centering\n" + body + f"\\caption{{{caption}}}\n\\label{{{label}}}\n\\end{{table}}\n"
+    return "\\begin{table}[H]\n\\centering\n" +f"\\caption{{{caption}}}\n" + body + f"\\label{{{label}}}\n\\end{{table}}\n"
 
 def _booktabs_matrix(M, row_names, col_names, caption, label):
     head = "\\begin{table}[H]\n\\centering\n"
