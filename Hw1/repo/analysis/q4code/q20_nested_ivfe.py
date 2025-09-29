@@ -1,3 +1,4 @@
+# q20_nested_ivfe.py  (fixed: use N, not log N)
 import os, numpy as np, pandas as pd, statsmodels.api as sm
 
 NAMES={1:"Yoplait",2:"Chobani",3:"Dannon",4:"Stonyfield Farm",5:"Activia"}
@@ -42,7 +43,7 @@ def _prep(df, zdist, zdiesel):
     df["logit_dep_nl"]=np.log(np.clip(df["share"],eps,None))-np.log(np.clip(df["s0"],eps,None))
     df["iv_cost"]=df[zdist]*df[zdiesel]
     ncount=df.groupby(["market","nest"])["product"].transform("count")
-    df["iv_lN"]=np.log(ncount.astype(float))
+    df["iv_N"]=ncount.astype(float)  
     return df
 
 def _fes(df):
@@ -56,7 +57,7 @@ def _fes(df):
 def estimate_alpha_rho(df):
     FE=_fes(df)
     X=pd.concat([df[["price","log_s_jg"]],FE],axis=1)
-    Z=pd.concat([df[["iv_cost","iv_lN"]],FE],axis=1)
+    Z=pd.concat([df[["iv_cost","iv_N"]],FE],axis=1)  
     X=X.replace([np.inf,-np.inf],np.nan).apply(pd.to_numeric,errors="coerce").astype(float)
     Z=Z.replace([np.inf,-np.inf],np.nan).apply(pd.to_numeric,errors="coerce").astype(float)
     y=pd.to_numeric(df["logit_dep_nl"].replace([np.inf,-np.inf],np.nan),errors="coerce").astype(float)
@@ -77,12 +78,16 @@ def main(in_csv="input/data_yoghurt_clean.csv",
     df=pd.read_csv(in_csv)
     df=_prep(df,zdist,zdiesel)
     a,sa,r,sr=estimate_alpha_rho(df)
-    tab=pd.DataFrame({"Variable":["Price ($\\alpha$)","$\\log s_{j|g}$ ($\\rho$)"],
-                      "Coef.":[-a,r],
-                      "Std. Err. (HC1)":[sa,sr]})
+    tab=pd.DataFrame({
+        "Variable":["Price ($\\alpha$)","$\\log s_{j|g}$ ($\\rho$)"],
+        "Coef.":[-a, r],
+        "Std. Err. (HC1)":[sa, sr]
+    })
+    for c in ["Coef.","Std. Err. (HC1)"]:
+        tab[c]=tab[c].map(lambda x: f"{x:.4f}")
     with open(out_tex,"w") as f:
-        f.write(_booktabs(tab,"Nested-logit IV with product/city/period FE (HC1).","tab:q20_nl_ivfe"))
-    print("alpha =",a,"rho =",r)
+        f.write(_booktabs(tab,"Nested-logit IV with product/city/period FE (HC1).","tab:q20_nl_ivfe",colfmt="lcc"))
+    print("alpha_hat =",a,"rho_hat =",r)
     print("Saved:",out_tex)
 
 if __name__=="__main__":

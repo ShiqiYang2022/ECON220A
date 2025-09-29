@@ -53,13 +53,13 @@ def _prep(df,zdist,zdiesel):
     df["logit_dep_nl"]=np.log(np.clip(df["share"],eps,None))-np.log(np.clip(df["s0"],eps,None))
     df["iv_cost"]=df[zdist]*df[zdiesel]
     ncount=df.groupby(["market","nest"])["product"].transform("count")
-    df["iv_lN"]=np.log(ncount.astype(float))
+    df["iv_N"]=ncount.astype(float)
     return df
 
 def estimate_alpha_rho(df):
     FE=_fes(df)
     X=pd.concat([df[["price","log_s_jg"]],FE],axis=1)
-    Z=pd.concat([df[["iv_cost","iv_lN"]],FE],axis=1)
+    Z=pd.concat([df[["iv_cost","iv_N"]],FE],axis=1)  
     X=X.replace([np.inf,-np.inf],np.nan).apply(pd.to_numeric,errors="coerce").astype(float)
     Z=Z.replace([np.inf,-np.inf],np.nan).apply(pd.to_numeric,errors="coerce").astype(float)
     y=pd.to_numeric(df["logit_dep_nl"].replace([np.inf,-np.inf],np.nan),errors="coerce").astype(float)
