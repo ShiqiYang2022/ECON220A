@@ -1,2 +1,0 @@
-# Destination | Source
-file_missing.txt | test/raw/move_sources/file_missing.txt

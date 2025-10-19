@@ -1,3 +1,0 @@
-# Destination | Source
-*file*.txt | test/raw/move_sources/file*.txt
-file*.txt | test/raw/move_sources/*file*.txt

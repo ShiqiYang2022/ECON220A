@@ -1,2 +1,0 @@
-# Destination | Source
-dir_depth | test/raw/log_sources/dir_depth
