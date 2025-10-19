@@ -1,0 +1,69 @@
+###################
+### ENVIRONMENT ###
+###################
+import os
+import sys
+
+### LOAD GSLAB MAKE
+ROOT = '..'
+gslm_path = os.path.join(ROOT, 'lib', 'gslab_make')
+
+sys.path.append(gslm_path)
+import gslab_make as gs
+
+### PULL PATHS FROM CONFIG
+PATHS = {
+    'root': ROOT,
+    'config': os.path.join(ROOT, 'config.yaml')
+}
+PATHS = gs.update_internal_paths(PATHS)
+
+### LOAD CONFIG USER 
+PATHS = gs.update_external_paths(PATHS)
+gs.update_executables(PATHS)
+
+############
+### MAKE ###
+############
+
+### START MAKE
+gs.remove_dir(['input', 'external'])
+gs.clear_dir(['output', 'log'])
+gs.start_makelog(PATHS)
+
+### MAKE LINKS TO INPUT AND EXTERNAL FILES
+inputs = gs.link_inputs(PATHS, ['input.txt'])
+externals = gs.link_externals(PATHS, ['external.txt'])
+gs.write_source_logs(PATHS, inputs + externals)
+gs.get_modified_sources(PATHS, inputs + externals)
+
+## MAKE VERSION LOGS
+gs.write_version_logs(PATHS)
+
+### RUN SCRIPTS
+gs.run_python(PATHS, program = 'q1code/q1_summary_stats.py')
+gs.run_python(PATHS, program = 'q1code/q3_ols_ehw.py')
+gs.run_python(PATHS, program = 'q1code/q4_elasticities.py')
+gs.run_python(PATHS, program = 'q1code/q5_diversion.py')
+gs.run_python(PATHS, program = 'q1code/q7_marginal_costs.py')
+gs.run_python(PATHS, program = 'q2code/q10_fe_ehw.py')
+gs.run_python(PATHS, program = 'q2code/q11_marginal_costs.py')
+gs.run_python(PATHS, program = 'q3code/q13_iv_fe.py')
+gs.run_python(PATHS, program = 'q3code/q14_mc_ivfe.py')
+gs.run_python(PATHS, program = 'q3code/q15_eq_prices.py')
+gs.run_python(PATHS, program = 'q3code/q16_merger_counterfactual.py')
+gs.run_python(PATHS, program = 'q3code/q17_welfare_ivfe.py')
+gs.run_python(PATHS, program = 'q4code/q20_nested_ivfe.py')
+gs.run_python(PATHS, program = 'q4code/q21_nested_elasticities.py')
+gs.run_python(PATHS, program = 'q4code/q22_nested_costs.py')
+gs.run_python(PATHS, program = 'q4code/q23_nl_merger_prices.py')
+gs.run_python(PATHS, program = 'q4code/q24_nl_welfare.py')
+
+### LOG OUTPUTS
+gs.log_files_in_output(PATHS)
+
+### CHECK FILE SIZES
+gs.check_module_size(PATHS)
+
+### END MAKE
+gs.end_makelog(PATHS)
