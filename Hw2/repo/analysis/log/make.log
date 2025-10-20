@@ -1,94 +1,14 @@
 --------------------------------------------------------------------------------
-Makelog started: 2025-09-28 20:20:59
-Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
+Makelog started: 2025-10-19 03:30:44
+Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw2/repo/analysis
 --------------------------------------------------------------------------------
 Input links successfully created!
 External links successfully created!
 Source logs successfully written!
 Version logs successfully written!
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q1_summary_stats.py" `
-Top 2 by price:
-    product_id product_name     price
-1           2      Chobani  1.143743
-2           3       Dannon  1.141041
-Top 2 by market share:
-    product_id product_name  market_share
-0           1      Yoplait      0.165774
-1           2      Chobani      0.163654
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q3_ols_ehw.py" `
-Saved LaTeX table to: output/q3_ols_ehw.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q4_elasticities.py" `
-
-[DEBUG] alpha_hat = 0.8642864238942536
-[DEBUG] price vector = [0.79438322 1.14374259 1.1410406  0.9037467  0.49190093]
-[DEBUG] share vector = [0.16577356 0.1636541  0.12819052 0.10864868 0.13793041]
-[DEBUG] alpha * p1 * s1 = 0.11381592205825779
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q5_diversion.py" `
-Saved LaTeX table to: output/q5_diversion_city1p1.tex
-                 Yoplait  Chobani  ...  Activia  Outside option
-Yoplait           0.0000   0.1962  ...   0.1653          0.3546
-Chobani           0.1982   0.0000  ...   0.1649          0.3537
-Dannon            0.1901   0.1877  ...   0.1582          0.3393
-Stonyfield Farm   0.1860   0.1836  ...   0.1547          0.3319
-Activia           0.1923   0.1898  ...   0.0000          0.3431
-
-[5 rows x 6 columns]
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q1code/q7_marginal_costs.py" `
-alpha_hat used = 0.799654
-Saved LaTeX to    : output/q7_mc_city1p1.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q2code/q10_fe_ehw.py" `
-alpha_hat (FE) = 0.868872
-Saved: output/q10_fe_ols_price.tex, output/q10_elasticities_city1p1_fe.tex, output/q10_diversion_city1p1_fe.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q2code/q11_marginal_costs.py" `
-alpha_hat used = 0.868872
-Saved LaTeX to    : output/q11_mc_city1p1_fe.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q13_iv_fe.py" `
-alpha_hat (IV-FE) = 3.433984  SE(HC1) = 0.051552
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q14_mc_ivfe.py" `
-alpha_hat (IV-FE) = 3.433984
-Saved: output/q14_mc_city1p1_ivfe.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q15_eq_prices.py" `
-alpha_hat (IV-FE) = 3.433984
-max|diff| = 0.01034023810736584
-Saved: output/q15_recovered_prices_city1p1.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q16_merger_counterfactual.py" `
-Saved: output/q16_merger_prices_city1p1.tex
-alpha_hat (IV-FE) = 3.433983577469405
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q3code/q17_welfare_ivfe.py" `
-alpha_hat (IV-FE) = 3.433983577469405
-Saved: output/q17_welfare_products_city1p1.tex and output/q17_welfare_summary_city1p1.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q20_nested_ivfe.py" `
-alpha = 2.1029273891974665 rho = 0.5319409127010122
-Saved: output/q20_nested_ivfe.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q21_nested_elasticities.py" `
-Saved: output/q21_nl_elasticities_city1p1.tex and output/q21_nl_diversion_city1p1.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q22_nested_costs.py" `
-alpha = 2.1029273891974665 rho = 0.5319409127010122
-Saved: output/q22_nl_costs_city1p1.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q23_nl_merger_prices.py" `
-alpha_nl = 2.1029273891974665 rho = 0.5319409127010122 alpha_mnl = 3.433983577469405
-Saved: output/q23_nl_merger_prices_city1p1.tex
-
-Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis/q4code/q24_nl_welfare.py" `
-Saved: output/q24_nl_welfare_city1p1.tex
-
+Executing command: `python  "/Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw2/repo/analysis/code/q1_shares_module.py" `
 Output logs successfully written!
 --------------------------------------------------------------------------------
-Makelog ended: 2025-09-28 20:21:26
-Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/analysis
+Makelog ended: 2025-10-19 03:30:47
+Working directory: /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw2/repo/analysis
 --------------------------------------------------------------------------------

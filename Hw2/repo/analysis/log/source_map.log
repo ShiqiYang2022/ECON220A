@@ -1,3 +1,3 @@
 destination | source
-input/lib | /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/lib
-input/data_yoghurt_clean.csv | /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw1/repo/data/output/data_yoghurt_clean.csv
+input/lib | /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw2/repo/lib
+input/data_yoghurt.csv | /Users/shiqiyang/Documents/PhD/ECON220A/Homework/Hw2/repo/raw/data_yoghurt.csv

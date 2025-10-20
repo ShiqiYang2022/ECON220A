@@ -16,4 +16,4 @@
 
 # Destination    | Source
 lib              | {root}/lib
-data_yoghurt_clean.csv | {root}/data/output/data_yoghurt_clean.csv
+data_yoghurt.csv | {root}/raw/data_yoghurt.csv
