@@ -16,19 +16,23 @@ def shares_from_delta(delta_vec, x_tilde_vec, sigma, v_draws):
     sj = np.mean(sij, axis=1)
     return sj
 
-def berry_contraction(s_obs, x_tilde, sigma, v, tol=1e-12, maxit=50000):
+def berry_contraction(s_obs, x_tilde, sigma, v, tol=1e-12, maxit=60000):
     s0 = 1.0 - float(s_obs.sum())
-    delta = np.log(np.clip(s_obs, 1e-300, 1.0)) - math.log(max(s0, 1e-300))
-    for _ in range(maxit):
+    delta = np.log(np.clip(s_obs, 1e-300, 1.0)) - np.log(max(s0, 1e-300))
+    for it in range(maxit):
         s_pred = shares_from_delta(delta, x_tilde, sigma, v)
         new_delta = delta + (np.log(s_obs) - np.log(np.clip(s_pred,1e-300,1.0)))
         if np.max(np.abs(new_delta - delta)) < tol:
+            if it > 2000:
+                print(f"   ⚙️  Berry contraction converged slowly ({it} iterations).")
             return new_delta
         delta = new_delta
+    print("   ⚠️  Berry contraction did NOT converge (hit maxit).")
     return delta
 
+
 def build_designs_q6(df):
-    prod_d = pd.get_dummies(df["product"], prefix="prod", drop_first=True)
+    prod_d = pd.get_dummies(df["product"], prefix="prod", drop_first=False)
     city_d = pd.get_dummies(df["city"],    prefix="city", drop_first=True)
     time_d = pd.get_dummies(df["period"],  prefix="per",  drop_first=True)
     cost_shift = (df["distance"] * df["diesel"]).to_frame("cost_shift")
@@ -46,20 +50,21 @@ def prepare_balanced_data_with_z(data_path="input/data_yoghurt.csv"):
     df["x_tilde"] = df["sugar_per_g"] - xbar
     z_market = df.groupby("market_id")["sugar_per_g"].sum().rename("z_ct")
     df = df.merge(z_market, on="market_id", how="left")
-    balanced = (df.groupby("market_id")["product"].nunique()==5)
-    ids = balanced[balanced].index.tolist()
-    dfb = df[df["market_id"].isin(ids)].copy().reset_index(drop=True)
-    gb = dfb.groupby("market_id", sort=True)
+    gb = df.groupby("market_id", sort=True)
     markets = {k: np.array(v, dtype=int) for k,v in gb.indices.items()}
-    return dfb, markets
+    return df, markets
 
 def invert_all_markets(df, markets, sigma, v):
     delta = np.zeros(df.shape[0])
-    for mkt, rows in markets.items():
+    total = len(markets)
+    for i, (mkt, rows) in enumerate(markets.items(), start=1):
+        if i % 50 == 0:
+            print(f"[σ={sigma:5.1f}] Processing market {i}/{total} ...")
         rows_sorted = rows[np.argsort(df.loc[rows,"product"].values)]
         s_obs = df.loc[rows_sorted,"share"].values
         x_tilde = df.loc[rows_sorted,"x_tilde"].values
         delta[rows_sorted] = berry_contraction(s_obs, x_tilde, sigma, v)
+    print(f"[σ={sigma:5.1f}] Finished all {total} markets.")
     return delta
 
 def blp_G_q6(df, markets, sigma, v):
@@ -73,7 +78,7 @@ def blp_G_q6(df, markets, sigma, v):
     G = 1_000_000.0 * float(m.T @ W @ m)
     return G, float(beta[0])
 
-def main(data_path="input/data_yoghurt.csv", use_first_k_markets=100, outdir="output"):
+def main(data_path="input/data_yoghurt.csv", use_first_k_markets=False, outdir="output"):
     os.makedirs(outdir, exist_ok=True)
     dfb, markets = prepare_balanced_data_with_z(data_path)
     keys = list(markets.keys())[:use_first_k_markets] if use_first_k_markets else list(markets.keys())
@@ -89,7 +94,12 @@ def main(data_path="input/data_yoghurt.csv", use_first_k_markets=100, outdir="ou
     pd.DataFrame(res_q6).to_csv(f"{outdir}/q6_blp_costshifter_plus_z_G.csv", index=False)
 
     sigma_vals = np.arange(-200, 201, 10)
-    G_vals = [blp_G_q6(df_small, markets_small, s, v)[0] for s in sigma_vals]
+    G_vals = []
+    for s in sigma_vals:
+        print(f"\n=== Start σ = {s:.1f} ===")
+        G, alpha = blp_G_q6(df_small, markets_small, s, v)
+        G_vals.append(G)
+        print(f"✓ Done σ={s:.1f}, G={G:.6f}, alpha={alpha:.4f}")
     dG_vals = np.gradient(G_vals, sigma_vals)
     pd.DataFrame({"sigma": sigma_vals, "G": G_vals, "dG": dG_vals}).to_csv(f"{outdir}/q7_Gsigma.csv", index=False)
 
