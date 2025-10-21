@@ -1,6 +1,12 @@
-import numpy as np, pandas as pd, math
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import math
+import numpy as np
+import pandas as pd
 from numpy.linalg import inv, solve
 from scipy.stats import norm
+from utils.latex_table import export_df_to_latex
 
 def vi_grid(N=50):
     u = np.linspace(0.1, 0.9, N)
@@ -91,10 +97,17 @@ def blp_G(df, markets, sigma, v):
 dfb, markets = prepare_data()
 v = vi_grid(50)
 results = []
-
 for s in [0, 10]:
     G, alpha = blp_G(dfb, markets, s, v)
     results.append({"sigma": s, "G": G, "alpha": alpha})
-    print(f"sigma={s:2d},  G={G:12.6f},  alpha={alpha:8.5f}")
+out_df = pd.DataFrame(results)
 
-pd.DataFrame(results).to_csv("output/q5_blp_costshifter_G.csv", index=False)
+os.makedirs("tables", exist_ok=True)
+export_df_to_latex(
+    df=out_df,
+    out_tex_path="tables/q5_blp_costshifter_G.tex",
+    caption="BLP Objective With Cost Shifter (Two Sigma Values)",
+    label="tab:q5_blp_costshifter_G",
+    index=False,
+    use_booktabs=True,
+)

@@ -1,6 +1,12 @@
-import numpy as np, pandas as pd, math
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import math
+import numpy as np
+import pandas as pd
 from numpy.linalg import inv, solve
 from scipy.stats import norm
+from utils.latex_table import export_df_to_latex
 
 def vi_grid(N=50):
     u = np.linspace(0.1, 0.9, N)
@@ -105,16 +111,23 @@ def blp_objective_and_grad(sigma, df, market_rows, v):
 
 dfb, market_rows = prepare_data()
 v = vi_grid(50)
-
 rows_for_speed = list(market_rows.keys())[:120]
 df_small = dfb[dfb["market_id"].isin(rows_for_speed)].copy().reset_index(drop=True)
 gb_small = df_small.groupby("market_id", sort=True)
 market_rows_small = {k: np.array(v, dtype=int) for k,v in gb_small.indices.items()}
-
 sigmas = [0.0, 2.0]
 results = []
 for s in sigmas:
     G, dG, res = blp_objective_and_grad(s, df_small, market_rows_small, v)
     results.append({"sigma": s, "G": float(G), "dG": float(dG), "alpha": float(res["beta"][0])})
+out_df = pd.DataFrame(results)
 
-pd.DataFrame(results).to_csv("output/q4_blp_results_two_sigmas.csv", index=False)
+os.makedirs("tables", exist_ok=True)
+export_df_to_latex(
+    df=out_df,
+    out_tex_path="tables/q4_blp_results_two_sigmas.tex",
+    caption="BLP Objective And Gradient At Two Sigma Values",
+    label="tab:q4_blp_results_two_sigmas",
+    index=False,
+    use_booktabs=True,
+)

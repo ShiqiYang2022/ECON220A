@@ -1,6 +1,8 @@
-import os, numpy as np, pandas as pd
+import sys, os, numpy as np, pandas as pd
 from numpy.linalg import inv, solve
 from scipy.stats import norm
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from utils.latex_table import export_df_to_latex
 
 def vi_grid(N=50):
     u = np.linspace(0.1, 0.9, N)
@@ -26,22 +28,21 @@ def berry_contraction(s_obs, x_tilde, sigma, v, tol=1e-12, maxit=80000):
         delta = new_delta
     return delta
 
-def read_beta_sigma(csv_path="output/blp_q8_newton_results.csv",
-                    beta_default=-3.5, sigma_default=80.7):
+def read_beta_sigma(csv_path="output/blp_q8_newton_results.csv", beta_default=-3.5, sigma_default=80.7):
     if os.path.exists(csv_path):
         tab = pd.read_csv(csv_path)
-        beta_price = float(tab.loc[tab["parameter"]=="alpha","estimate"].values[0]) # 这是 β_price
+        beta_price = float(tab.loc[tab["parameter"]=="alpha","estimate"].values[0])
         sigma_hat  = float(tab.loc[tab["parameter"]=="sigma","estimate"].values[0])
     else:
         beta_price, sigma_hat = beta_default, sigma_default
-    alpha_struct = -beta_price  # α>0
+    alpha_struct = -beta_price
     return alpha_struct, sigma_hat
 
 def build_O(prod_ids, mode="single"):
     J = len(prod_ids)
-    if mode == "single":       # 每个产品一家
+    if mode == "single":
         return np.eye(J), ["prod"+str(p) for p in prod_ids]
-    elif mode == "danone345":  # 3,4,5 同一家公司（Danone），1,2 各自独立
+    elif mode == "danone345":
         owners = []
         for p in prod_ids:
             if p in (3,4,5): owners.append("Danone")
@@ -53,9 +54,7 @@ def build_O(prod_ids, mode="single"):
     else:
         raise ValueError("unknown O mode")
 
-def compute_market_costs(data_path="input/data_yoghurt.csv", city=1, period=1,
-                         center_mode="market", O_mode="single",
-                         alpha=None, sigma=None):
+def compute_market_costs(data_path="input/data_yoghurt.csv", city=1, period=1, center_mode="market", O_mode="single", alpha=None, sigma=None):
     df = pd.read_csv(data_path)
     df["market_id"] = list(zip(df["city"], df["period"]))
     df["sugar_per_g"] = df["sugar"]/df["weight"]
@@ -64,71 +63,36 @@ def compute_market_costs(data_path="input/data_yoghurt.csv", city=1, period=1,
     else:
         xbar = df.loc[(df["city"]==1)&(df["period"]==1),"sugar_per_g"].mean()
         df["x_tilde"] = df["sugar_per_g"] - xbar
-
     msk = (df["city"]==city) & (df["period"]==period)
     mkt = df.loc[msk, ["product","price","share","x_tilde"]].copy().sort_values("product").reset_index(drop=True)
-
-    p       = mkt["price"].to_numpy(float)
-    s_obs   = mkt["share"].to_numpy(float)
+    p = mkt["price"].to_numpy(float)
+    s_obs = mkt["share"].to_numpy(float)
     x_tilde = mkt["x_tilde"].to_numpy(float)
-    prod_ids= mkt["product"].astype(int).tolist()
-    J       = len(prod_ids)
-
-    # 参数
+    prod_ids = mkt["product"].astype(int).tolist()
+    J = len(prod_ids)
     if (alpha is None) or (sigma is None):
         alpha_hat, sigma_hat = read_beta_sigma()
     else:
         alpha_hat, sigma_hat = alpha, sigma
-
-    # δ 与份额
     v = vi_grid(50)
     delta = berry_contraction(s_obs, x_tilde, sigma_hat, v)
     s_bar, s_ij = shares_from_delta(delta, x_tilde, sigma_hat, v)
-
-    # 份额-价格雅可比
     N = s_ij.shape[1]
-    M = (s_ij @ s_ij.T) / N                   # E[s_ij s_il], 对称
-    own = s_bar - np.diag(M)                  # E[s_ij(1 - s_ij)]
+    M = (s_ij @ s_ij.T) / N
+    own = s_bar - np.diag(M)
     dSdp = alpha_hat * M
     for j in range(J):
-        dSdp[j,j] = -alpha_hat * own[j]       # 自价 < 0
-
-    # 所有权矩阵
+        dSdp[j,j] = -alpha_hat * own[j]
     O, owners = build_O(prod_ids, mode=O_mode)
-    Omega = O * dSdp                           # O ∘ D
-
-    # markups = -(O ∘ D)^T^{-1} s
+    Omega = O * dSdp
     markups = -solve(Omega.T, s_bar)
     mc = p - markups
-
-    # —— 打印关键中间量（Activia 默认产品=5）——
-    idx5 = prod_ids.index(5) if 5 in prod_ids else None
-    if idx5 is not None:
-        print("\n--- DEBUG Activia (prod=5) ---")
-        print(f"p5={p[idx5]:.6f}, s5={s_bar[idx5]:.6f}")
-        print(f"dSdp[5,5]={dSdp[idx5,idx5]:.6f}  (should be negative)")
-        approx_mu5 = s_bar[idx5] / (-dSdp[idx5,idx5])  # 忽略交叉项的近似
-        print(f"approx markup ignoring cross = {approx_mu5:.6f}")
-        print(f"full-system markup          = {markups[idx5]:.6f}")
-        print(f"mc5 = {mc[idx5]:.6f}  (target ≈ 0.1985)")
-        print("row dSdp[5,*] =", np.round(dSdp[idx5,:], 6))
-        print("col dSdp[*,5] =", np.round(dSdp[:,idx5], 6))
-        print("Omega row 5   =", np.round(Omega[idx5,:], 6))
-
-    out = pd.DataFrame({
-        "product":prod_ids, "owner":owners,
-        "price":p, "share":s_bar,
-        "markup":markups, "mc":mc
-    })
+    out = pd.DataFrame({"product":prod_ids, "owner":owners, "price":p, "share":s_bar, "markup":markups, "mc":mc})
     return out, dSdp, Omega
 
 if __name__ == "__main__":
-    # 你当前的设置：市场去中心 + 单品公司
-    out, dSdp, Omega = compute_market_costs(
-        data_path="input/data_yoghurt.csv",
-        city=1, period=1,
-        center_mode="1",
-        O_mode="single"     # 也可以改成 "danone345" 看多产品所有权的影响
-    )
-    print("\n== RESULTS ==")
+    os.makedirs("tables", exist_ok=True)
+    out, dSdp, Omega = compute_market_costs(data_path="input/data_yoghurt.csv", city=1, period=1, center_mode="market", O_mode="single")
+    stem = "city1_period1_single_market"
+    export_df_to_latex(out.round(6), f"tables/q10_results_{stem}.tex", caption="Prices, Shares, Markups, And Marginal Costs (City 1, Period 1)", label=f"tab:q10_results_{stem}", index=False, use_booktabs=True)
     print(out.round(6).to_string(index=False))

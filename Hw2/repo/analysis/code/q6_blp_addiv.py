@@ -1,7 +1,11 @@
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import os, numpy as np, pandas as pd, math
 from numpy.linalg import inv
 from scipy.stats import norm
 import matplotlib.pyplot as plt
+from utils.latex_table import export_df_to_latex
 
 def vi_grid(N=50):
     u = np.linspace(0.1, 0.9, N)
@@ -30,11 +34,10 @@ def berry_contraction(s_obs, x_tilde, sigma, v, tol=1e-12, maxit=60000):
     print("   ⚠️  Berry contraction did NOT converge (hit maxit).")
     return delta
 
-
 def build_designs_q6(df):
     prod_d = pd.get_dummies(df["product"], prefix="prod", drop_first=False)
-    city_d = pd.get_dummies(df["city"],    prefix="city", drop_first=True)
-    time_d = pd.get_dummies(df["period"],  prefix="per",  drop_first=True)
+    city_d = pd.get_dummies(df["city"], prefix="city", drop_first=True)
+    time_d = pd.get_dummies(df["period"], prefix="per", drop_first=True)
     cost_shift = (df["distance"] * df["diesel"]).to_frame("cost_shift")
     X = pd.concat([df[["price"]], prod_d, city_d, time_d], axis=1).astype(float).values
     Z = pd.concat([cost_shift, df[["z_ct"]], prod_d, city_d, time_d], axis=1).astype(float).values
@@ -80,6 +83,7 @@ def blp_G_q6(df, markets, sigma, v):
 
 def main(data_path="input/data_yoghurt.csv", use_first_k_markets=False, outdir="output"):
     os.makedirs(outdir, exist_ok=True)
+    os.makedirs("tables", exist_ok=True)
     dfb, markets = prepare_balanced_data_with_z(data_path)
     keys = list(markets.keys())[:use_first_k_markets] if use_first_k_markets else list(markets.keys())
     df_small = dfb[dfb["market_id"].isin(keys)].copy().reset_index(drop=True)
@@ -91,7 +95,15 @@ def main(data_path="input/data_yoghurt.csv", use_first_k_markets=False, outdir="
     for s in [0, 10]:
         G, alpha = blp_G_q6(df_small, markets_small, s, v)
         res_q6.append({"sigma": s, "G": G, "alpha": alpha})
-    pd.DataFrame(res_q6).to_csv(f"{outdir}/q6_blp_costshifter_plus_z_G.csv", index=False)
+    df_q6 = pd.DataFrame(res_q6)
+    export_df_to_latex(
+        df=df_q6,
+        out_tex_path="tables/q6_blp_costshifter_plus_z_G.tex",
+        caption="BLP Objective With Cost Shifter And Market-Level $z_{ct}$ (Two Sigma Values)",
+        label="tab:q6_blp_costshifter_plus_z_G",
+        index=False,
+        use_booktabs=True,
+    )
 
     sigma_vals = np.arange(-200, 201, 10)
     G_vals = []
@@ -101,7 +113,15 @@ def main(data_path="input/data_yoghurt.csv", use_first_k_markets=False, outdir="
         G_vals.append(G)
         print(f"✓ Done σ={s:.1f}, G={G:.6f}, alpha={alpha:.4f}")
     dG_vals = np.gradient(G_vals, sigma_vals)
-    pd.DataFrame({"sigma": sigma_vals, "G": G_vals, "dG": dG_vals}).to_csv(f"{outdir}/q7_Gsigma.csv", index=False)
+    df_g = pd.DataFrame({"sigma": sigma_vals, "G": G_vals, "dG": dG_vals})
+    export_df_to_latex(
+        df=df_g,
+        out_tex_path="tables/q7_Gsigma.tex",
+        caption="Objective $G(\\sigma)$ And Numerical Derivative $\\partial G/\\partial \\sigma$",
+        label="tab:q7_Gsigma",
+        index=False,
+        use_booktabs=True,
+    )
 
     plt.figure(figsize=(9,5))
     plt.plot(sigma_vals, G_vals, lw=2)

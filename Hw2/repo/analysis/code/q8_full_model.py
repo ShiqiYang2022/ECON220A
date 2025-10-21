@@ -1,6 +1,8 @@
-import time, numpy as np, pandas as pd
+import sys, os, time, numpy as np, pandas as pd
 from numpy.linalg import inv, solve
 from scipy.stats import norm
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from utils.latex_table import export_df_to_latex
 
 np.set_printoptions(precision=6, suppress=True)
 
@@ -179,14 +181,17 @@ def run_estimation(data_path="data_yoghurt.csv", use_first_k_markets=None, sigma
     v = vi_grid(50)
     sigma_hat, beta_hat, xi, m, dm, hist = newton_optimize_sigma(df, markets, v, X, Z, W, Pz, sigma0=sigma0)
     alpha_hat, se_alpha, se_sigma = ehw_se(df, X, Z, W, beta_hat, xi, m, dm)
-    res = pd.DataFrame({
-        "parameter": ["alpha", "sigma"],
-        "estimate":  [alpha_hat,  sigma_hat],
-        "se_ehw":    [se_alpha,   se_sigma]
-    })
-    out_csv = "output/blp_q8_newton_results.csv"
-    res.to_csv(out_csv, index=False)
-    print(f"[{now()}] Done in {(time.time()-t0)/60:.2f} min. Results → {out_csv}")
+    res = pd.DataFrame({"parameter": ["alpha", "sigma"], "estimate":  [alpha_hat,  sigma_hat], "se_ehw":    [se_alpha,   se_sigma]})
+    os.makedirs("tables", exist_ok=True)
+    export_df_to_latex(
+        df=res,
+        out_tex_path="tables/blp_q8_newton_results.tex",
+        caption="Newton Estimation Results For BLP ($\\alpha$ And $\\sigma$) With EHW SE",
+        label="tab:blp_q8_newton_results",
+        index=False,
+        use_booktabs=True,
+    )
+    print(f"[{now()}] Done in {(time.time()-t0)/60:.2f} min. LaTeX → tables/blp_q8_newton_results.tex")
     print(res.to_string(index=False))
     return res
 
