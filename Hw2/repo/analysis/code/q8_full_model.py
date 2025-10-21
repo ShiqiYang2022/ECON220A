@@ -156,12 +156,22 @@ def newton_optimize_sigma(df, markets, v, X, Z, W, Pz, sigma0=0.0, K=1_000_000.0
 def ehw_se(df, X, Z, W, beta, xi, m, dm):
     n = X.shape[0]
     A = inv(X.T @ Z @ W @ Z.T @ X)
-    S = (Z.T @ (xi.reshape(-1,1) * Z)) / n
+
+    # --- 正确的 EHW "meat": Z' diag(xi^2) Z / n ---
+    xi2 = (xi**2).reshape(-1, 1)
+    S = (Z.T @ (xi2 * Z)) / n
+
+    # 2SLS/IV 的稳健方差（给 beta）
     Vbeta = A @ (X.T @ Z @ W @ S @ W @ Z.T @ X) @ A
+
     alpha_hat = float(beta[0])
     se_alpha = float(np.sqrt(max(Vbeta[0,0], 0.0)))
+
+    # GMM 对 sigma 的稳健方差：D=dm = ∂m/∂σ（维度= instruments × 1）
     D = dm.reshape(-1,1)
-    Vsig = (inv(D.T @ W @ D) @ (D.T @ W @ S @ W @ D) @ inv(D.T @ W @ D)) / n
+    middle = (D.T @ W @ S @ W @ D)
+    bread  = (D.T @ W @ D)
+    Vsig = inv(bread) @ middle @ inv(bread) / n
     se_sigma = float(np.sqrt(max(Vsig[0,0], 0.0)))
     return alpha_hat, se_alpha, se_sigma
 
