@@ -50,7 +50,7 @@
 \makeatother
 
 \begin{document}
-\title{\noindent \textbf{Econ 220A Homework 1}}
+\title{\noindent \textbf{Econ 220A Homework 3}}
 \author{\noindent Shiqi Yang,\textbf{ }\textit{UC Berkeley}\textbf{}\thanks{E-mail:\ shiqiy@berkeley.edu
 }\textbf{}\\
 }
@@ -61,186 +61,64 @@
 
 \section{Question 1}
 
-See ``Hw2/repo/analysis/code/q1\_shares\_module.py" as reference of calculating market shares.
+When the model is correctly specified, the only source of price endogeneity is 
+the correlation between prices $p_{jct}$ and unobserved demand shocks $\xi_{jct}$. 
+Both sets of instruments, cost shifters and competitor based variables satisfy the two IV conditions:
+
+\textbf{(i) Relevance:}
+Each instrument must be correlated with prices, 
+$\operatorname{Cov}(Z_{jct},p_{jct})\neq 0$. 
+Cost shifters (e.g., distance$\times$density) affect prices through marginal costs,
+while competitor-based instruments (e.g., number of products in the market)
+affect prices through competition intensity.
+
+\textbf{(ii) Exclusion restriction:}
+In the correctly specified model, neither set of instruments affects 
+utility directly or correlates with demand shocks,
+$\operatorname{Cov}(Z_{jct},\xi_{jct})=0$.
+Therefore, both types of instruments can deliver an unbiased estimate of 
+the true price coefficient $\alpha$.
 
 \section{Question 2}
 
+When the model is misspecified, included instruments (based on competitors'
+characteristics, e.g.\ the number of products in a market) can bias the
+estimated own price elasticity because they shift market shares through two
+channels: (i) indirectly via prices and (ii) directly through the demand
+system's substitution structure.  The exclusion restriction for such
+instruments is valid only under the maintained demand model once we have
+correctly controlled for the instrument's direct effect on shares.  If
+the model is misspecified (e.g.\ logit is imposed but true substitution
+violates IIA), the direct share effect is not properly absorbed, so the
+instrument is correlated with the structural error and IV estimates of
+$\alpha$ are biased.
 
-See ``Hw2/repo/analysis/code/q2\_invert.py" as reference of the algorithm. The values of $\delta$ are presented below. We can have $log(s_{jct}) - log(s_{0ct}) = \delta_{jct}$.
+By contrast, excluded instruments (cost shifters such as
+distance$\times$disease prices to distribution centers) affect demand only
+through prices.  Under this question, costs have no direct impact on utilities or market shares, so the exclusion restriction $\Cov(Z^{\text{cost}},\xi)=0$ remains valid even if the demand model is
+misspecified, provided that misspecification does not introduce a direct
+non price path from the cost shifter to shares.
 
-\input{Hw2/repo/analysis/tables/q2_delta_city1_period1_sigma0p0}
+Because excluded and included variables may be correlated, it is important to
+residualize the cost instrument with respect to the included controls:
+$\tilde Z=Z-(X'X)^{-1}X'Z$.  This orthogonalization removes the variation in
+$Z$ that is mechanically related to included covariates, reducing spurious
+correlation with the error term and making the IV estimate of $\alpha$ more
+robust when there is a risk of misspecification.
 
 \section{Question 3}
 
+See ``Hw3/repo/analysis/code/q3\_strong\_excluded\_instrument.py" for the code.
 
-Let $s(\delta,\sigma)$ denote the $J$-vector of market shares implied by the random-coefficients logit with a single random coefficient on $x_j=X_j^s-\bar X^s$. For each simulation draw $i$ with $v_i$ we define
-\[
-s_{ij}=\frac{\exp\{\delta_j+\sigma v_i x_j\}}{1+\sum_{m=1}^J \exp\{\delta_m+\sigma v_i x_m\}},
-\qquad
-s_i=(s_{i1},\ldots,s_{iJ})^\top,
-\]
-and approximate $s(\delta,\sigma)=\mathbb{E}_i[s_i]$ by averaging over the $N$ draws.
+The included instrument is a function of the composition itself (e.g., the
+number of products in the market), i.e.\ it is measurable with respect to
+$\mathcal J_{ct}$. Residualizing it on $(\mathcal J_{ct},j,c,m)$ collapses its
+variation to zero and destroys relevance. 
 
-Observed shares satisfy the implicit system $s(\delta(\sigma),\sigma)=s^{\text{obs}}$. By the Implicit Function Theorem,
-\[
-\frac{\partial \delta}{\partial \sigma}
-= -\left(\frac{\partial s}{\partial \delta}\right)^{-1}
-\left(\frac{\partial s}{\partial \sigma}\right).
-\]
-For a given draw $i$,
-\[
-\frac{\partial s_i}{\partial \delta}
-=\operatorname{diag}(s_i)-s_i s_i^{\top},
-\qquad
-\left(\frac{\partial s_i}{\partial \sigma}\right)_j
-= v_i\, s_{ij}\big(x_j - s_i^{\top}x\big).
-\]
-Taking expectations over draws,
-\[
-\frac{\partial s}{\partial \delta}
-=\mathbb{E}_i\!\left[\operatorname{diag}(s_i)-s_i s_i^{\top}\right] \equiv \mathbf{J},
-\qquad
-\left(\frac{\partial s}{\partial \sigma}\right)_j
-=\mathbb{E}_i\!\left[v_i\, s_{ij}\big(x_j - s_i^{\top}x\big)\right] \equiv (g_\sigma)_j.
-\]
-Hence,
-\[
-\boxed{
-\frac{\partial \delta(\sigma)}{\partial \sigma}
-= -\,\mathbf{J}^{-1}\,g_\sigma
-}
-\]
-with $\mathbf{J}$ and $g_\sigma$ defined above. 
-
-
-\section{Question 4}
-
-See  ``Hw2/repo/analysis/code/q4\_blp\_results.py" as reference of the algorithm.
-
-\section{Question 5}
-
-We construct a cost-shifter instrument following Problem Set~1:
-\[
-Z^{CS}_{jct} = \text{distance}_{jc} \times \text{diesel}_t,
-\]
-where $\text{distance}_{jc}$ is the distance between city $c$ and product $j$'s distribution center, and $\text{diesel}_t$ is the diesel price in period $t$. This variable affects prices through marginal costs but is excluded from the demand equation. The final instrument matrix is
-\[
-Z = [Z^{CS},\ \text{product FE},\ \text{city FE},\ \text{time FE}],
-\quad W = (Z'Z)^{-1}.
-\]
-
-For a given $\sigma$ and simulated heterogeneity draws $v_i$, we compute $\delta(\sigma)$ via the Berry contraction:
-\[
-\delta^{(n+1)} = \delta^{(n)} + [\log s^{obs} - \log s(\delta^{(n)},\sigma)].
-\]
-We then estimate the linear parameters by IV:
-\[
-\hat{\beta} = ((X'ZWZ'X)^{-1}X'ZWZ'\delta),
-\quad \hat{\xi} = \delta - X\hat{\beta}.
-\]
-The GMM moments and objective function are:
-\[
-m = \frac{1}{n}Z'\hat{\xi}, \qquad G(\sigma) = 10^6\, m'Wm.
-\]
-
-Evaluating at $\sigma = 0$ and $\sigma = 10$ gives nearly identical values:
-\[
-G(0) = 1.45\times10^{-24}, \qquad G(10) = 1.44\times10^{-24},
-\]
+Table XXX reports the value of instrument in city 1 period 4.
 
 
 
-\input{Hw2/repo/analysis/tables/q5_blp_costshifter_G}
-
-The objective function is essentially flat in $\sigma$, implying that the dispersion parameter is weakly identified. The reason that we cannot identify $\sigma$ is we do not have enough moment conditions for GMM.
-
-
-\section{Question 6}
-
-G(0) and G(10) are reported below:
-
-\input{Hw2/repo/analysis/tables/q6_blp_costshifter_plus_z_G}
-
-
-In Question 5, the objective function was nearly flat:
-\[
-G(0) \approx G(10) \approx 0,
-\]
-implying that for any value of $\sigma$ (or more generally, $\theta_2$), one can always find linear parameters $\hat{\beta}_0$ and $\hat{\alpha}$ such that
-\[
-\hat{\xi}(\theta_2)' Z W Z' \hat{\xi}(\theta_2) = 0.
-\]
-In other words, the instruments in $Z$ (mainly the cost shifter and fixed effects) were sufficient to orthogonalize the residuals for any $\sigma$, leaving $G(\sigma)$ flat and $\sigma$ weakly identified.
-
-When we introduce the additional instrument
-\[
-z_{ct} = \sum_{j \in (c,t)} X_j^s,
-\]
-the matrix $Z$ now contains variation that is correlated with the nonlinear component
-$\sigma v_i (X_j^s - \bar{X}^s)$.
-Because this new instrument captures market-level differences in the distribution of
-$X_j^s$, changes in $\sigma$ affect $\delta(\sigma)$ in directions that $Z$ can no longer
-completely span. Consequently, $\hat{\xi}(\sigma)$ cannot be made perfectly orthogonal to $Z$
-for all $\sigma$, and
-\[
-G(0) = 0.0049 \neq G(10) = 0.0058.
-\]
-This curvature in $G(\sigma)$ means that the moments are now informative about $\sigma$:
-the additional instrument helps identify $\theta_2$ by breaking the collinearity between the
-nonlinear term and the linear projection space of $X$.
-
-\section{Question 7}
-
-See below. $\partial G/\partial \sigma$ crosses zero when G($\sigma$) reach minimum. The shape of G($\sigma$) is symmetric, and reach global minimum at around -150 and 150, it have a local minimum point at $\sigma = 0$.
-
-\begin{figure}[H]
-    \centering % Centers the figure and caption within the text width
-\includegraphics[width=0.8\textwidth]{Hw2/repo/analysis/output/q7_Gsigma.png}
-\end{figure}
-
-\begin{figure}[H]
-    \centering % Centers the figure and caption within the text width
-\includegraphics[width=0.8\textwidth]{Hw2/repo/analysis/output/q7_dG.png}
-\end{figure}
-
-\section{Question 8}
-
-See below.
-
-\input{Hw2/repo/analysis/tables/blp_q8_newton_results}
-
-
-\section{Question 9}
-
-See below for the cross elasticities and the diversion ratios. We can find the own elasticity did not change much. But cross-elasticities substitution patterns are larger for products with similar market share and similar sugar content. This is because random coefficient breaks IIA, so similar products have higher substitution rates.
-
-\input{Hw2/repo/analysis/tables/q9_elasticities_city1_period1}
-
-\input{Hw2/repo/analysis/tables/q9_diversion_city1_period1}
-
-\section{Question 10}
-
-See below, all costs are positive.
-
-\input{Hw2/repo/analysis/tables/q10_results_city1_period1_single_market}
-
-
-\section{Question 11}
-
-See below. The prices of other products are similar to the predicts from the Logit and MNL model in PSet 1, but the BLP model predicts a higher merged prices. This is because there is not much cross elasticity to the sugar-free products, which let the firm able to set higher prices.
-
-\input{Hw2/repo/analysis/tables/q11_prices_counterfactual_city1_period1}
-
-\section{Question 12}
-
-See below. The welfare cost is -0.087, which is larger than results in Logit model -0.015 and nested logit model -0.061. This is consistent with our previous results showing that price of merged products increase more than in nest and non-nested models, which makes consumer in general worse off.
-
-\input{Hw2/repo/analysis/tables/q12_welfare_city1_period1}
-
-\section{Question 13}
-
-
-Problem Set #1 highlights  instruments and the choice of model are essential for identification. Problem Set #2 shows how BLP model reshape elasticities and diversion patterns, producing heterogeneous substitution across brands. Together they demonstrate that pricing, markups, and merger counterfactuals heavily depend on the model setting and the substitution pattern can be very important.
 
 \end{spacing}
 \end{document}
